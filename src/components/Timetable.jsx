@@ -1,70 +1,110 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import scheduleData from "./scheduleData";
 import {
   Box,
   Paper,
   Select,
   MenuItem,
-  Typography,
   FormControl,
   InputLabel,
+  Typography,
 } from "@mui/material";
+import { DateTime } from "luxon";
 
-// Generate time labels based on a starting time and fixed end time (03:00 next day)
+const allowedDateDays = new Set([
+  "2025-06-11_Thursday",
+  "2025-06-11_Friday",
+  "2025-06-11_Saturday",
+  "2025-06-11_Sunday",
+]);
+
 const generateTimeLabels = (startTime) => {
   const labels = [];
   const [startHour] = startTime.split(":").map(Number);
 
-  // From startHour (e.g., 18) to 23:45
   for (let h = startHour; h < 24; h++) {
     for (let m = 0; m < 60; m += 15) {
-      labels.push(`${h.toString().padStart(2, "0")}:${m.toString().padStart(2, "0")}`);
+      labels.push(
+        `${h.toString().padStart(2, "0")}:${m.toString().padStart(2, "0")}`
+      );
     }
   }
-
-  // From 00:00 to 03:00
   for (let h = 0; h < 3; h++) {
     for (let m = 0; m < 60; m += 15) {
-      labels.push(`${h.toString().padStart(2, "0")}:${m.toString().padStart(2, "0")}`);
+      labels.push(
+        `${h.toString().padStart(2, "0")}:${m.toString().padStart(2, "0")}`
+      );
     }
   }
-
   return labels;
 };
 
-// Convert HH:mm to index in the labels array based on dayStart
 const timeToIndex = (time, dayStart) => {
   const [startH, startM] = dayStart.split(":").map(Number);
   const [h, m] = time.split(":").map(Number);
-
   const startMinutes = startH * 60 + startM;
   const currentMinutes = (h < startH ? h + 24 : h) * 60 + m;
-
   const diff = currentMinutes - startMinutes;
-  return Math.floor(diff / 15); // 15-min interval index
+  return diff / 15;
 };
 
-// Schedule data with dayStart per day
-// Fixed schedule data
-
 export default function Timetable() {
-  const [selectedDay, setSelectedDay] = useState("Thursday");
+  const today = DateTime.now().setZone("Europe/Amsterdam");
+  const todayISO = today.toISODate();
+
+  const defaultDay = "Thursday";
+
+  const [selectedDay, setSelectedDay] = useState(defaultDay);
   const { stages = [], dayStart } = scheduleData[selectedDay] || {};
   const timeLabels = generateTimeLabels(dayStart);
 
+  const [showCurrentLine, setShowCurrentLine] = useState(false);
+  const [currentTimeIndex, setCurrentTimeIndex] = useState(null);
+
+  const updateCurrentTime = () => {
+    const key = `${todayISO}_${selectedDay}`;
+
+    if (allowedDateDays.has(key)) {
+      const currentTimeStr = `${today.hour
+        .toString()
+        .padStart(2, "0")}:${today.minute.toString().padStart(2, "0")}`;
+      const idx = timeToIndex(currentTimeStr, dayStart);
+      setCurrentTimeIndex(idx);
+      setShowCurrentLine(true);
+    } else {
+      setShowCurrentLine(false);
+      setCurrentTimeIndex(null);
+    }
+  };
+
+  useEffect(() => {
+    updateCurrentTime();
+    const interval = setInterval(updateCurrentTime, 60 * 1000);
+    return () => clearInterval(interval);
+  }, [selectedDay, dayStart]);
+
   return (
-    <Box sx={{ minWidth: `${150 + timeLabels.length * 100}px`, fontFamily: "Arial" }}>
+    <Box
+      sx={{
+        minWidth: `${150 + timeLabels.length * 110}px`, // wider time slots for bigger boxes
+        fontFamily: "Arial, sans-serif",
+        fontSize: "1rem", // bigger font overall
+        lineHeight: 1.5,
+      }}
+    >
       <Box sx={{ p: 2 }}>
         <FormControl>
-          <InputLabel id="day-label">Day</InputLabel>
+          <InputLabel id="day-label" sx={{ fontSize: "1.1rem" }}>
+            Day
+          </InputLabel>
           <Select
             labelId="day-label"
             value={selectedDay}
             onChange={(e) => setSelectedDay(e.target.value)}
-            sx={{ minWidth: 200 }}
+            sx={{ minWidth: 220, fontSize: "1.1rem" }}
           >
             {Object.keys(scheduleData).map((day) => (
-              <MenuItem key={day} value={day}>
+              <MenuItem key={day} value={day} sx={{ fontSize: "1rem" }}>
                 {day}
               </MenuItem>
             ))}
@@ -76,9 +116,7 @@ export default function Timetable() {
       <Box
         sx={{
           display: "grid",
-          gridTemplateColumns: `150px repeat(${timeLabels.length}, 100px)`,
-          borderBottom: "2px solid black",
-          borderTop: "2px solid black",
+          gridTemplateColumns: `150px repeat(${timeLabels.length}, 110px)`,
           position: "sticky",
           top: 0,
           backgroundColor: "#fff",
@@ -89,10 +127,11 @@ export default function Timetable() {
           sx={{
             textAlign: "center",
             fontWeight: "bold",
-            borderRight: "1px solid black",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
+            fontSize: "1.25rem",
+            height: 60, // taller header
           }}
         >
           {selectedDay}
@@ -101,11 +140,15 @@ export default function Timetable() {
           <Box
             key={i}
             sx={{
-              textAlign: "center",
-              borderLeft: "1px solid black",
-              fontSize: "0.75rem",
+              textAlign: "left",
+              paddingLeft: "8px",
+              fontSize: "0.9rem",
               py: 1,
-              fontWeight: 500,
+              fontWeight: 600,
+              height: 60, // match header height
+              display: "flex",
+              alignItems: "center",
+
             }}
           >
             {time}
@@ -119,9 +162,8 @@ export default function Timetable() {
           key={i}
           sx={{
             display: "grid",
-            gridTemplateColumns: `150px repeat(${timeLabels.length}, 100px)`,
-            borderBottom: "1px solid black",
-            minHeight: 50,
+            gridTemplateColumns: `150px repeat(${timeLabels.length}, 110px)`,
+            minHeight: 60, // taller rows
             alignItems: "center",
             position: "relative",
           }}
@@ -132,12 +174,12 @@ export default function Timetable() {
               fontWeight: "bold",
               backgroundColor: stage.color,
               color: "#fff",
-              borderRight: "1px solid black",
               height: "100%",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               whiteSpace: "nowrap",
+              fontSize: "1.15rem",
             }}
           >
             {stage.name}
@@ -149,25 +191,50 @@ export default function Timetable() {
             return (
               <Paper
                 key={j}
-                elevation={2}
-                sx={{
-                  gridColumn: `${colStart + 2} / ${colEnd + 2}`,
-                  backgroundColor: stage.color,
-                  color: "#fff",
-                  p: 1,
-                  borderRadius: 0,
-                  textAlign: "center",
-                  fontWeight: "bold",
-                  overflow: "hidden",
-                  whiteSpace: "nowrap",
-                  textOverflow: "ellipsis",
-                  border: "1px solid #000",
-                }}
+                elevation={3}
+                  sx={{
+                    gridColumn: `${Math.floor(colStart) + 2} / ${Math.ceil(colEnd) + 2}`,
+                    backgroundColor: stage.color,
+                    color: "#fff",
+                    p: 1,
+                    textAlign: "center",
+                    fontWeight: "bold",
+                    overflow: "hidden",
+                    whiteSpace: "nowrap",
+                    textOverflow: "ellipsis",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    fontSize: "1rem",
+                    height: 60,
+                    borderRadius: 0,
+                  }}
               >
-                {event.name}
+                <Typography noWrap sx={{ fontWeight: 700 }}>
+                  {event.name}
+                </Typography>
+                <Typography
+                  sx={{ fontWeight: 400, fontSize: "0.85rem", mt: 0.5 }}
+                >
+                  {event.start} - {event.end}
+                </Typography>
               </Paper>
             );
           })}
+
+          {showCurrentLine && currentTimeIndex !== null && (
+            <Box
+              sx={{
+                position: "absolute",
+                top: 0,
+                bottom: 0,
+                width: 5,
+                backgroundColor: "red",
+                left: 150 + currentTimeIndex * 110,
+                zIndex: 20,
+              }}
+            />
+          )}
         </Box>
       ))}
     </Box>

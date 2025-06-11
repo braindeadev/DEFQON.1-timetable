@@ -510,7 +510,7 @@ const scheduleData = {
         name: "BLACK",
         color: "#878787",
         events: [
-          { name: "Open Airbed Concert with JDX", start: "11:00", end: "12:15" },
+          { name: "Open Airbed Concert with JDX", start: "11:00", end: "12:30" },
           { name: "The Darkraver & Vince", start: "12:30", end: "14:00" },
           { name: "D-Fence", start: "14:00", end: "15:00" },
           { name: "Mad Dog", start: "15:00", end: "16:00" },
@@ -601,7 +601,7 @@ const scheduleData = {
       },
       {
         name: "WHITE",
-        color: "#000000",
+        color: "#F9FBFD",
         events: [
           { name: "Bold Action", start: "11:00", end: "12:30" },
           { name: "S1ngular", start: "12:30", end: "13:15" },
@@ -615,7 +615,7 @@ const scheduleData = {
       },
             {
         name: "PURPLE",
-        color: "#A100FF",
+        color: "#A100FE",
         events: [
           { name: "Testarossa", start: "11:00", end: "12:00" },
           { name: "Yeyo", start: "12:00", end: "13:00" },
@@ -651,7 +651,6 @@ const scheduleData = {
     ],
   },
 };
-
 
 export default scheduleData;
 
