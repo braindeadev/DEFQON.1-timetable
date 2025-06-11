@@ -1,9 +1,9 @@
 {
+  "homepage": "https:///braindeadev/DEFQON.1-timetable",
   "name": "defqon-1-timetable",
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://braindeadev.github.io/DEFQON.1-timetable",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
