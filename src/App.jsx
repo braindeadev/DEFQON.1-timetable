@@ -1,5 +1,5 @@
 import React from "react";
-import Timetable from "./components/Timetable";
+import Timetable from "./assets/components/Timetable";
 import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
 
 const darkTheme = createTheme({
@@ -11,6 +11,7 @@ const darkTheme = createTheme({
   },
   typography: {
     fontFamily: "'Orbitron', sans-serif",
+
   },
 });
 
