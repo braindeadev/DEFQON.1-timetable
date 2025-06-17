@@ -140,7 +140,7 @@ export default function Timetable() {
               color: "#eee",
               "& .MuiOutlinedInput-notchedOutline": { borderColor: "#555" },
               "&:hover .MuiOutlinedInput-notchedOutline": { borderColor: "#888" },
-              "&.Mui-focused .MuiOutlinedInput-notchedOutline": { borderColor: "#90caf9" },
+              "&.Mui-focused .MuiOutlinedInput-notchedOutline": { borderColor: "#888" },
               "& .MuiSelect-icon": { color: "#90caf9" },
             }}
           >
@@ -420,15 +420,31 @@ export default function Timetable() {
         )}
       </Box>
 
-      <Dialog open={confirmOpen} onClose={closeConfirm}>
-        <DialogTitle>Clear All Favorites</DialogTitle>
+ <Dialog open={confirmOpen} onClose={closeConfirm}>
+        <DialogTitle sx={{ m: 0, p: 2, position: 'relative' }}>
+          Clear All Favorites
+          <IconButton
+            aria-label="close"
+            onClick={closeConfirm}
+            sx={{
+              position: 'absolute',
+              right: 8,
+              top: 8,
+              color: (theme) => theme.palette.grey[500],
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
+        </DialogTitle>
         <DialogContent>
-          Are you sure you want to clear all favorites? This action cannot be undone.
+          Are you sure you want to clear all favorite events? This action cannot be undone lol.
         </DialogContent>
         <DialogActions>
-          <Button onClick={closeConfirm}>Cancel</Button>
-          <Button color="error" onClick={clearAllFavorites}>
-            Clear
+          <Button onClick={closeConfirm} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={clearAllFavorites} color="error" variant="contained">
+            Clear All
           </Button>
         </DialogActions>
       </Dialog>
