@@ -46,7 +46,13 @@ export default function Timetable() {
   const today = DateTime.now().setZone("Europe/Amsterdam");
   const todayISO = today.toISODate();
 
-  const [selectedDay, setSelectedDay] = useState(DEFAULT_DAY);
+  const [selectedDay, setSelectedDay] = useState(() => {
+    const savedDay = localStorage.getItem("selectedDay");
+    if (savedDay && scheduleData[savedDay]) {
+      return savedDay;
+    }
+    return DEFAULT_DAY;
+  });
   const { stages = [], dayStart } = scheduleData[selectedDay] || {};
   const timeLabels = generateTimeLabels(dayStart);
 
@@ -60,7 +66,8 @@ export default function Timetable() {
   const stageTotalHeight =
     stageRowHeight + stageRowMarginTop * 4 + stageRowMarginBottom * 4;
 
-  const verticalLinesHeight = stages.length * stageTotalHeight + 2 * timeLabelHeight;
+  const verticalLinesHeight =
+    stages.length * stageTotalHeight + 2 * timeLabelHeight;
 
   // For current time red line positioning and height
   const currentLineTop = 0;
@@ -78,12 +85,18 @@ export default function Timetable() {
     localStorage.setItem("favorites", JSON.stringify(favorites));
   }, [favorites]);
 
+  useEffect(() => {
+    localStorage.setItem("selectedDay", selectedDay);
+  }, [selectedDay]);
+
   const getEventId = (stageName, eventName, startTime) =>
     `${selectedDay}-${stageName}-${eventName}-${startTime}`;
 
   const toggleFavorite = (eventId) => {
     setFavorites((prev) =>
-      prev.includes(eventId) ? prev.filter((id) => id !== eventId) : [...prev, eventId]
+      prev.includes(eventId)
+        ? prev.filter((id) => id !== eventId)
+        : [...prev, eventId]
     );
   };
 
@@ -145,7 +158,11 @@ export default function Timetable() {
             }}
           >
             {Object.keys(scheduleData).map((day) => (
-              <MenuItem key={day} value={day} sx={{ fontSize: "1rem", color: "#e0e0e0" }}>
+              <MenuItem
+                key={day}
+                value={day}
+                sx={{ fontSize: "1rem", color: "#e0e0e0" }}
+              >
                 {day}
               </MenuItem>
             ))}
@@ -182,7 +199,7 @@ export default function Timetable() {
         <Box
           sx={{
             display: "grid",
-            gridTemplateColumns: ` ${LEFT_LABEL_WIDTH}px repeat(${timeLabels.length}, ${TIME_COLUMN_WIDTH_PX}px)`,
+            gridTemplateColumns: `${LEFT_LABEL_WIDTH}px repeat(${timeLabels.length}, ${TIME_COLUMN_WIDTH_PX}px)`,
             top: 0,
             zIndex: 10,
             borderBottom: "2px solid #555",
@@ -190,7 +207,7 @@ export default function Timetable() {
         >
           <DayLabel sx={{ borderRadius: "4px 0 0 0" }}>{selectedDay}</DayLabel>
           {timeLabels.map((time, i) => {
-            const [_, m] = time.split(":");
+            const [, m] = time.split(":");
             const show = Number(m) % 30 === 0;
             return (
               <Box
@@ -204,7 +221,9 @@ export default function Timetable() {
                 }}
               >
                 {show && (
-                  <Typography sx={{ color: "#bbb", fontWeight: 600, userSelect: "none" }}>
+                  <Typography
+                    sx={{ color: "#bbb", fontWeight: 600, userSelect: "none" }}
+                  >
                     {time}
                   </Typography>
                 )}
@@ -222,7 +241,7 @@ export default function Timetable() {
               key={i}
               sx={{
                 display: "grid",
-                gridTemplateColumns: ` ${LEFT_LABEL_WIDTH}px repeat(${timeLabels.length}, ${TIME_COLUMN_WIDTH_PX}px)`,
+                gridTemplateColumns: `${LEFT_LABEL_WIDTH}px repeat(${timeLabels.length}, ${TIME_COLUMN_WIDTH_PX}px)`,
                 alignItems: "center",
                 position: "relative",
                 height: stageRowHeight,
@@ -246,7 +265,6 @@ export default function Timetable() {
                   px: 1,
                   zIndex: 10,
                   textShadow: "0 0 3px rgba(0,0,0,0.9)",
-
                 }}
               >
                 {stage.name}
@@ -285,57 +303,56 @@ export default function Timetable() {
                         ? "grayscale(80%) drop-shadow(0 0 1px black)"
                         : "drop-shadow(0 0 1px black)",
                       zIndex: 10,
+                      cursor: "pointer",
                     }}
+                    onClick={() => toggleFavorite(eventId)}
+                    aria-label={isFavorited ? "Unfavorite" : "Favorite"}
                   >
-                  <Typography
-                    noWrap
-                    sx={{
-                      fontWeight: 700,
-                      textShadow: "0 0 3px rgba(0,0,0,0.9)",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      gap: 1,
-                    }}
-                  >
-                    {event.name}
-                  </Typography>
-                  <Typography
-                    sx={{
-                      fontWeight: 400,
-                      fontSize: "0.85rem",
-                      mt: 0.5,
-                      textShadow: "0 0 3px rgba(0,0,0,0.9)",
-                    }}
-                  >
-                    {event.start} - {event.end}
-                  </Typography>
+                    <Typography
+                      noWrap
+                      sx={{
+                        fontWeight: 700,
+                        textShadow: "0 0 3px rgba(0,0,0,0.9)",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: 1,
+                      }}
+                    >
+                      {event.name}
+                    </Typography>
+                    <Typography
+                      sx={{
+                        fontWeight: 400,
+                        fontSize: "0.85rem",
+                        mt: 0.5,
+                        textShadow: "0 0 3px rgba(0,0,0,0.9)",
+                      }}
+                    >
+                      {event.start} - {event.end}
+                    </Typography>
 
                     {isFavorited ? (
                       <FavoriteIcon
-                        onClick={() => toggleFavorite(eventId)}
                         sx={{
-                          cursor: "pointer",
                           color: "white",
                           filter: "drop-shadow(0 0 1px black)",
                           position: "absolute",
                           bottom: 6,
                           right: 6,
+                          pointerEvents: "none",
                         }}
-                        aria-label="Unfavorite"
                       />
                     ) : (
                       <FavoriteBorderIcon
-                        onClick={() => toggleFavorite(eventId)}
                         sx={{
-                          cursor: "pointer",
                           color: "white",
                           filter: "drop-shadow(0 0 1px black)",
                           position: "absolute",
                           bottom: 6,
                           right: 6,
+                          pointerEvents: "none",
                         }}
-                        aria-label="Favorite"
                       />
                     )}
                   </Paper>
@@ -349,14 +366,14 @@ export default function Timetable() {
         <Box
           sx={{
             display: "grid",
-            gridTemplateColumns: ` ${LEFT_LABEL_WIDTH}px repeat(${timeLabels.length}, ${TIME_COLUMN_WIDTH_PX}px)`,
+            gridTemplateColumns: `${LEFT_LABEL_WIDTH}px repeat(${timeLabels.length}, ${TIME_COLUMN_WIDTH_PX}px)`,
             zIndex: 10,
             borderTop: "2px solid #555",
           }}
         >
           <DayLabel sx={{ borderRadius: "4px 0 0 0" }}>{selectedDay}</DayLabel>
           {timeLabels.map((time, i) => {
-            const [_, m] = time.split(":");
+            const [, m] = time.split(":");
             const show = Number(m) % 30 === 0;
             return (
               <Box
@@ -370,7 +387,9 @@ export default function Timetable() {
                 }}
               >
                 {show && (
-                  <Typography sx={{ color: "#bbb", fontWeight: 600, userSelect: "none" }}>
+                  <Typography
+                    sx={{ color: "#bbb", fontWeight: 600, userSelect: "none" }}
+                  >
                     {time}
                   </Typography>
                 )}
@@ -396,7 +415,7 @@ export default function Timetable() {
             <Box
               key={i}
               sx={{
-                borderLeft: i === -1 ? "none" : "1px solid #444",
+                borderLeft: i === 0 ? "none" : "1px solid #444",
                 height: "100%",
               }}
             />
@@ -408,26 +427,53 @@ export default function Timetable() {
           <Box
             sx={{
               position: "absolute",
-              top: 0,
+              top: -24,
               left: LEFT_LABEL_WIDTH + currentTimeIndex * TIME_COLUMN_WIDTH_PX,
-              width: "5px",
-              height: currentLineHeight,
-              backgroundColor: "red",
               zIndex: 20,
-              border: "1px solid #444",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              transform: "translateX(-50%)",
             }}
-          />
+          >
+            {/* NOW label */}
+            <Box
+              sx={{
+                backgroundColor: "red",
+                color: "#fff",
+                px: 1,
+                py: 0.25,
+                borderRadius: "4px",
+                fontSize: "0.75rem",
+                fontWeight: "bold",
+                boxShadow: "0 0 5px rgba(0,0,0,0.5)",
+                mb: "2px",
+              }}
+            >
+              NOW
+            </Box>
+
+            {/* Red time line */}
+            <Box
+              sx={{
+                width: "4px",
+                height: currentLineHeight,
+                backgroundColor: "red",
+                border: "1px solid #444",
+              }}
+            />
+          </Box>
         )}
       </Box>
 
- <Dialog open={confirmOpen} onClose={closeConfirm}>
-        <DialogTitle sx={{ m: 0, p: 2, position: 'relative' }}>
+      <Dialog open={confirmOpen} onClose={closeConfirm}>
+        <DialogTitle sx={{ m: 0, p: 2, position: "relative" }}>
           Clear All Favorites
           <IconButton
             aria-label="close"
             onClick={closeConfirm}
             sx={{
-              position: 'absolute',
+              position: "absolute",
               right: 8,
               top: 8,
               color: (theme) => theme.palette.grey[500],
