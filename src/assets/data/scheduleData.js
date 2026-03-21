@@ -81,7 +81,7 @@ const scheduleData = {
           { name: "Brennen Heart", start: "20:00", end: "20:45" },
           { name: "Outsiders", start: "20:45", end: "21:30" },
           { name: "B-Front", start: "21:30", end: "22:20" },
-          { name: "THE SPOTLIGHT D-BLOCK & S-TE-FAN", start: "22:30", end: "23:00" }
+          { name: "THE SPOTLIGHT D-BLOCK & S-TE-FAN", start: "22:20", end: "23:00" }
         ]
       },
       {

@@ -5,23 +5,28 @@ import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
 const darkTheme = createTheme({
   palette: {
     mode: "dark",
-    background: { default: "#1e1e1e", paper: "#2c2c2c" },
-    text: { primary: "#e0e0e0", secondary: "#aaa" },
-    primary: { main: "#90caf9" },
+    background: { default: "#0A0000", paper: "#100404" },
+    text: { primary: "#D4B483", secondary: "#9A7B4A" },
+    primary: { main: "#C0192A" },
   },
   typography: {
-    fontFamily: "'Orbitron', sans-serif",
-
+    fontFamily: "'Bebas Neue', 'Anton', sans-serif",
   },
 });
 
-
 function App() {
   return (
-    <ThemeProvider theme={darkTheme}>
-      <CssBaseline />
-      <Timetable />
-    </ThemeProvider>
+    <>
+      {/* Bebas Neue = Defqon-tyylinen kapea bold-fontti, Anton = varafontti */}
+      <link
+        href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Anton&family=Orbitron:wght@400;700;900&display=swap"
+        rel="stylesheet"
+      />
+      <ThemeProvider theme={darkTheme}>
+        <CssBaseline />
+        <Timetable />
+      </ThemeProvider>
+    </>
   );
 }
 
