@@ -1,5 +1,5 @@
 export const CRIMSON   = "#A60132";
-export const WHITE   = "#ffffff";
+export const WHITE     = "#ffffff";
 export const CRIMSON2  = "#6E1828";
 export const BLACK     = "#080202";
 export const BEIGE     = "#BC9B5E";
