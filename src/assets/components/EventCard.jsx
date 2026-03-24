@@ -10,7 +10,7 @@ import {
   favIconSx,
   favBorderIconSx,
 } from "../components/styles/stageRowStyles";
-import { CRIMSON, BEIGE_L } from "../components/styles/palette";
+import { CRIMSON, BEIGE_L, WHITE } from "../components/styles/palette";
 
 export const EventCard = ({ event, dayStart, stageColor, isFavorite, showOnlyFav, onToggle }) => {
   const colStart = timeToIndex(event.start, dayStart);
