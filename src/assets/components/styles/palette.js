@@ -1,11 +1,14 @@
-export const CRIMSON   = "#FF0911";
-export const CRIMSON2  = "#FD0910";
+export const CRIMSON   = "#A60132";
+export const WHITE   = "#ffffff";
+export const CRIMSON2  = "#6E1828";
 export const BLACK     = "#080202";
 export const BEIGE     = "#BC9B5E";
 export const BEIGE_L   = "#EDD8A8";
 export const BEIGE_D   = "#4E3F26";
-export const DARK_BG   = "rgba(6,2,2,0.95)" ;
+export const DARK_BG   = "rgba(6,2,2,0.95)";
 export const PANEL_BG  = "rgba(12,4,4,0.92)";
 export const PANEL_ALT = "rgba(18,6,6,0.90)";
+export const SELECT_BG = `${BLACK}cc`;
+export const MENU_BG   = "#0d0101";
 export const FONT      = "'Bebas Neue','Anton',sans-serif";
 export const BORDER_W  = 52;

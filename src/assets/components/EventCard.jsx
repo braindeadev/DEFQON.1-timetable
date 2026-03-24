@@ -10,7 +10,7 @@ import {
   favIconSx,
   favBorderIconSx,
 } from "../components/styles/stageRowStyles";
-import { CRIMSON } from "../components/styles/palette";
+import { CRIMSON, BEIGE_L } from "../components/styles/palette";
 
 export const EventCard = ({ event, dayStart, stageColor, isFavorite, showOnlyFav, onToggle }) => {
   const colStart = timeToIndex(event.start, dayStart);
@@ -19,9 +19,11 @@ export const EventCard = ({ event, dayStart, stageColor, isFavorite, showOnlyFav
 
   return (
     <Paper
-      elevation={4}
+      elevation={0}
       sx={{
         gridColumn: `${Math.floor(colStart) + 2} / ${Math.ceil(colEnd) + 2}`,
+        position: "relative", // FIX: needed so the absolute fav icons render inside the card
+        overflow: "hidden",   // FIX: clip the icon if the card is very narrow
         ...eventCardSx(stageColor, gray),
       }}
       onClick={onToggle}
@@ -33,7 +35,7 @@ export const EventCard = ({ event, dayStart, stageColor, isFavorite, showOnlyFav
         {event.start} – {event.end}
       </Typography>
       {isFavorite
-        ? <FavoriteIcon sx={favIconSx(CRIMSON)} />
+        ? <FavoriteIcon sx={favIconSx(WHITE)} />
         : <FavoriteBorderIcon sx={favBorderIconSx} />
       }
     </Paper>

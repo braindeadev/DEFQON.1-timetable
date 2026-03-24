@@ -1,7 +1,8 @@
 import { Padding } from "@mui/icons-material";
-import { BLACK, CRIMSON, BEIGE, BEIGE_L, BEIGE_D, FONT, DARK_BG, PANEL_BG, PANEL_ALT } from "./palette";
+import { WHITE, BLACK, CRIMSON, BEIGE, BEIGE_D, FONT, DARK_BG, PANEL_BG, PANEL_ALT, SELECT_BG, MENU_BG } from "./palette";
 
 // ── Vaihepalkin nimi-solu ──────────────────────────────────────
+// FIX: automatically switches to dark text for light-colored stages (WHITE, YELLOW, etc.)
 export const stageNameSx = (color) => ({
   textAlign: "center",
   fontWeight: "bold",
@@ -11,15 +12,16 @@ export const stageNameSx = (color) => ({
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  fontSize: "1.1rem",
+  fontSize: "1.50rem",
   borderRadius: "4px",
   marginRight: "15px",
   px: 1,
   zIndex: 10,
-  textShadow: "0 0 8px rgba(0,0,0,0.95)",
+
   fontFamily: FONT,
-  letterSpacing: "0.08em",
-  border: `1px solid ${color}aa`,
+  letterSpacing: "0.1em",
+  textShadow: "0 1px 5px rgba(0,0,0,0.60)",
+  border: `2px solid ${CRIMSON}45`,
 });
 
 // --daylabel-----
@@ -31,65 +33,66 @@ export const dayLabelSx = {
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  fontSize: "1.4rem",
-  color: BEIGE,
+  fontSize: "1.85rem",
   userSelect: "none",
-  letterSpacing: "0.22em",
+  letterSpacing: "0.1em",
   textTransform: "uppercase",
   fontFamily: FONT,
 };
 
 // ── Tapahtuma-kortti ───────────────────────────────────────────
 export const eventCardSx = (color, gray) => ({
-  backgroundColor: gray ? "#1a0606" : color,
-  color: gray ? "#553030" : "#fff",
-  opacity: gray ? 0.38 : 1,
-  p: 2,
+  backgroundColor: gray ? "#2a2a2a" : color,
+  color: gray ? "#666" : "#fff",
+  opacity: gray ? 0.45 : 1,
+  p: "6px",
+  mx: "2px",
   fontWeight: "bold",
   display: "flex",
   flexDirection: "column",
   justifyContent: "center",
-  borderRadius: "4px",
-  border: gray ? `1px solid #330808` : `2px solid ${color}cc`,
+  alignItems: "center",
+  borderRadius: "3px",
+  border: gray ? `2px solid #444` : `2px solid ${color}99`,
   cursor: "pointer",
   transition: "all 0.2s ease",
-  filter: gray
-    ? "grayscale(100%) brightness(0.32)"
-    : `drop-shadow(0 0 5px ${color}88)`,
+  filter: gray ? "grayscale(100%) brightness(0.4)" : "none",
   zIndex: 10,
 });
 
 // ── Tapahtuman nimi-teksti ─────────────────────────────────────
 export const eventNameSx = {
-  fontWeight: 100,
-  textShadow: "0 0 6px rgba(0,0,0,0.75)",
+  fontWeight: 700,
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
   gap: 1,
   fontFamily: FONT,
-  fontSize: "0.95rem",
-  letterSpacing: "0.06em",
+  fontSize: "1.2rem",
+  letterSpacing: "0.07em",
+  textShadow: "0 1px 4px rgba(0,0,0,0.50)",
+  lineHeight: 1.15,
 };
 
 // ── Tapahtuman aika-teksti ─────────────────────────────────────
 export const eventTimeSx = {
-  fontWeight: 400,
-  fontSize: "0.73rem",
+  fontWeight: 500,
+  fontSize: "0.85rem",
   mt: 0.4,
-  textShadow: "0 0 4px rgba(0,0,0,0.9)",
   textAlign: "center",
   fontFamily: FONT,
-  opacity: 0.88,
+  opacity: 1,
+  textShadow: "0 1px 3px rgba(0,0,0,0.50)",
+  letterSpacing: "0.05em",
 };
 
 // ── Suosikki-ikonit ───────────────────────────────────────────
-export const favIconSx = (crimson) => ({
-  color: BEIGE_L,
+export const favIconSx = (WHITE) => ({
+  color: WHITE,
   position: "absolute",
   bottom: 4,
   right: 4,
-  fontSize: "1.2rem",
+  fontSize: "1.4rem",
 });
 
 export const favBorderIconSx = {
@@ -97,50 +100,48 @@ export const favBorderIconSx = {
   position: "absolute",
   bottom: 4,
   right: 4,
-  fontSize: "1.2rem",
+  fontSize: "1.4rem",
 };
 
 // ── Vaiherivin wrapper ─────────────────────────────────────────
+// Läpinäkyvät taustat jotta taustakuva paistaa läpi
 export const stageRowSx = (isEven, timeLabelsLength, leftLabelWidth, timeColumnWidth, stageTotalHeight, mTop, mBot) => ({
   display: "grid",
   gridTemplateColumns: `${leftLabelWidth}px repeat(${timeLabelsLength},${timeColumnWidth}px)`,
   height: stageTotalHeight,
   pt: mTop,
   pb: mBot,
-  background: isEven ? PANEL_BG : PANEL_ALT,
+  background: "rgba(4,0,0,0.62)",
   position: "relative",
   zIndex: 1,
-  borderBottom: `2px solid ${CRIMSON}18`,
 });
 
 // ── Aikaleima-rivi ─────────────────────────────────────────────
-export const timeRowSx = (timeLabelsLength, leftLabelWidth, timeColumnWidth) => ({
+export const timeRowSx = (timeLabelsLength, leftLabelWidth, timeColumnWidth, borderSide) => ({
   display: "grid",
   gridTemplateColumns: `${leftLabelWidth}px repeat(${timeLabelsLength},${timeColumnWidth}px)`,
-  borderTop:    `2px solid ${CRIMSON}55`,
-  borderBottom: `2px solid ${CRIMSON}55`,
-  background: DARK_BG,
+  borderTop:    borderSide === "top"    ? `2px solid ${CRIMSON}85` : "none",
+  borderBottom: borderSide === "bottom" ? `2px solid ${CRIMSON}85` : "none",
+  background: "rgba(4,0,0,0.62)",
   zIndex: 10,
 });
 
 // ── Select (päivänvalinta) ─────────────────────────────────────
 export const selectSx = {
-  fontSize: "1.1rem",
-  color: BEIGE,
+  fontSize: "1.6rem",
   fontFamily: FONT,
   letterSpacing: "0.12em",
   "& .MuiOutlinedInput-notchedOutline": { borderColor: `${CRIMSON}55` },
   "&:hover .MuiOutlinedInput-notchedOutline": { borderColor: `${CRIMSON}99` },
   "&.Mui-focused .MuiOutlinedInput-notchedOutline": { borderColor: CRIMSON },
   "& .MuiSelect-icon": { color: CRIMSON },
-  background: "#080202cc",
+  background: SELECT_BG,
 };
 
 export const menuItemSx = {
-  color: BEIGE,
   fontFamily: FONT,
-  fontSize: "1rem",
-  background: "#0d0101",
+  fontSize: "1.15rem",
+  background: MENU_BG,
   "&:hover": { background: `${CRIMSON}33` },
 };
 
@@ -150,20 +151,19 @@ export const controlBarSx = {
   alignItems: "center",
   p: 2,
   gap: 2,
-  background: "rgba(10,2,2,0.90)",
-  borderBottom: `1px solid ${CRIMSON}33`,
+  background: "transparent",
+  borderBottom: `2px solid ${CRIMSON}45`,
 };
 
 // ── "Tyhjennä suosikit" -nappi ────────────────────────────────
 export const clearBtnSx = {
-  color: `${CRIMSON}bb`,
-  borderColor: `${CRIMSON}44`,
+  color: `${CRIMSON}cc`,
+  borderColor: `${CRIMSON}55`,
   fontFamily: FONT,
-  fontSize: "0.9rem",
-  letterSpacing: "0.1em",
+  fontSize: "1rem",
+  letterSpacing: "0.12em",
   "&:hover": {
     borderColor: CRIMSON,
-    color: BEIGE_L,
     background: `${CRIMSON}22`,
   },
 };
@@ -171,23 +171,22 @@ export const clearBtnSx = {
 // ── Vahvistusdialogi ──────────────────────────────────────────
 export const dialogPaperSx = {
   background: "#0d0101",
-  border: `1px solid ${CRIMSON}77`,
+  border: `2px solid ${CRIMSON}45`,
   color: BEIGE,
   fontFamily: FONT,
 };
 
 export const dialogTitleSx = {
   fontFamily: FONT,
-  color: BEIGE_L,
-  letterSpacing: "0.15em",
-  fontSize: "1.4rem",
+  letterSpacing: "0.18em",
+  fontSize: "1.6rem",
+  textShadow: "0 1px 4px rgba(0,0,0,0.5)",
 };
 
 export const dialogContentSx = {
-  color: `${BEIGE}aa`,
   fontFamily: FONT,
-  fontSize: "1rem",
-  letterSpacing: "0.05em",
+  fontSize: "1.1rem",
+  letterSpacing: "0.06em",
 };
 
 export const dialogCancelBtnSx = {
@@ -205,33 +204,36 @@ export const dialogConfirmBtnSx = {
   "&:hover": {
     background: `${CRIMSON}22`,
     borderColor: CRIMSON,
-    color: BEIGE_L,
   },
 };
 
 // ── NOW-viiva ─────────────────────────────────────────────────
-export const nowLineSx = (leftLabelWidth, currentTimeIndex, timeColumnWidth) => ({
+// Positioitu grid-wrapperin sisälle: top=0 = ylätimelabelin yläreuna,
+// height=verticalLinesH = koko grid ylä-timerow + stagerivet + ala-timerow
+export const nowLineSx = (leftLabelWidth, currentTimeIndex, timeColumnWidth, verticalLinesH) => ({
   position: "absolute",
-  top: -24,
+  top: 0,
   left: leftLabelWidth + currentTimeIndex * timeColumnWidth,
   zIndex: 20,
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
   transform: "translateX(-50%)",
+  height: verticalLinesH,
+  pointerEvents: "none",
 });
 
 export const nowBadgeSx = {
   backgroundColor: CRIMSON,
-  color: BEIGE_L,
   px: 1,
   py: 0.25,
   borderRadius: "3px",
-  fontSize: "0.68rem",
+  fontSize: "0.78rem",
   fontWeight: "bold",
   mb: "2px",
   fontFamily: FONT,
-  letterSpacing: "0.12em",
+  letterSpacing: "0.14em",
+  textShadow: "0 1px 3px rgba(0,0,0,0.6)",
 };
 
 export const nowLineStemSx = (crimson, verticalLinesH) => ({
