@@ -12,7 +12,7 @@ import {
 } from "../components/styles/stageRowStyles";
 import { WHITE } from "../components/styles/palette";
 
-export const EventCard = ({ event, dayStart, stageColor, isFavorite, showOnlyFav, onToggle }) => {
+export const EventCard = ({ event, dayStart, stageColor, isFavorite, showOnlyFav, onToggle, isMobile }) => {
   const colStart = timeToIndex(event.start, dayStart);
   const colEnd   = timeToIndex(event.end,   dayStart);
   const gray     = showOnlyFav && !isFavorite;
@@ -27,10 +27,10 @@ export const EventCard = ({ event, dayStart, stageColor, isFavorite, showOnlyFav
         ...eventCardSx(stageColor, gray),
       }}
     >
-      <Typography noWrap sx={eventNameSx}>
+      <Typography noWrap sx={{ ...eventNameSx, fontSize: isMobile ? "0.7rem" : undefined }}>
         {event.name}
       </Typography>
-      <Typography sx={eventTimeSx}>
+      <Typography sx={{ ...eventTimeSx, fontSize: isMobile ? "0.6rem" : undefined }}>
         {event.start} – {event.end}
       </Typography>
       {isFavorite

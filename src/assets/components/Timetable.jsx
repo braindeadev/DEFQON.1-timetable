@@ -8,7 +8,7 @@ import { generateTimeLabels } from "../../utils/timeUtils";
 import {
   Box, Select, MenuItem, FormControl, Typography,
   Switch, FormControlLabel, Button, Dialog, DialogTitle,
-  DialogContent, DialogActions, IconButton,
+  DialogContent, DialogActions, IconButton, useMediaQuery,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
@@ -46,6 +46,15 @@ const makeEventId = (selectedDay, stageName, eventName, start) =>
   `${selectedDay}-${stageName}-${eventName}-${start}`;
 
 export default function Timetable() {
+  const isMobile = useMediaQuery("(max-width:600px)");
+  const isTablet = useMediaQuery("(max-width:960px)");
+
+  // Skaalataan layout mobiilille/tabletille
+  const leftLabelWidth  = isMobile ? 72  : isTablet ? 100 : LEFT_LABEL_WIDTH;
+  const timeLabelHeight = isMobile ? 40  : isTablet ? 50  : TIME_LABEL_HEIGHT;
+  const stageRowHeight  = isMobile ? 60  : isTablet ? 75  : STAGE_ROW_HEIGHT;
+  const timeColWidth    = isMobile ? 22  : isTablet ? 28  : TIME_COLUMN_WIDTH_PX;
+  const stageTotalHeight = stageRowHeight + (M_TOP + M_BOT) * 8;
   const [selectedDay, setSelectedDay] = useState(() => {
     const s = localStorage.getItem("selectedDay");
     return s && scheduleData[s] ? s : DEFAULT_DAY;
@@ -58,8 +67,8 @@ export default function Timetable() {
 
   const { stages = [], dayStart } = scheduleData[selectedDay] || {};
   const timeLabels = generateTimeLabels(dayStart);
-  const totalWidth = timeLabels.length * TIME_COLUMN_WIDTH_PX;
-  const verticalLinesH = stages.length * STAGE_TOTAL_HEIGHT + 2 * TIME_LABEL_HEIGHT;
+  const totalWidth = timeLabels.length * timeColWidth;
+  const verticalLinesH = stages.length * stageTotalHeight + 2 * timeLabelHeight;
 
   const { favorites, toggle: toggleFav, clear: clearFavs } = useFavorites();
   const { currentTimeIndex, showCurrentLine } = useNowLine(selectedDay, dayStart);
@@ -99,10 +108,30 @@ export default function Timetable() {
     window.addEventListener("mouseup", onMouseUp);
     el.style.cursor = "grab";
 
+    // Touch-tuki mobiilille
+    const onTouchStart = (e) => {
+      const touch = e.touches[0];
+      dragState.current = { dragging: true, startX: touch.pageX, scrollLeft: el.scrollLeft };
+    };
+    const onTouchMove = (e) => {
+      if (!dragState.current.dragging) return;
+      const touch = e.touches[0];
+      const dx = touch.pageX - dragState.current.startX;
+      el.scrollLeft = dragState.current.scrollLeft - dx;
+    };
+    const onTouchEnd = () => { dragState.current.dragging = false; };
+
+    el.addEventListener("touchstart", onTouchStart, { passive: true });
+    el.addEventListener("touchmove", onTouchMove, { passive: true });
+    el.addEventListener("touchend", onTouchEnd);
+
     return () => {
       el.removeEventListener("mousedown", onMouseDown);
       window.removeEventListener("mousemove", onMouseMove);
       window.removeEventListener("mouseup", onMouseUp);
+      el.removeEventListener("touchstart", onTouchStart);
+      el.removeEventListener("touchmove", onTouchMove);
+      el.removeEventListener("touchend", onTouchEnd);
     };
   }, []);
 
@@ -115,17 +144,17 @@ export default function Timetable() {
         <Box
           key={i}
           sx={{
-            width: TIME_COLUMN_WIDTH_PX,
+            width: timeColWidth,
             flexShrink: 0,
-            height: TIME_LABEL_HEIGHT,
+            height: timeLabelHeight,
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            ...(isQuarter && { borderLeft: `2px solid ${CRIMSON}65`, paddingLeft: 1.5 }),
+            ...(isQuarter && { borderLeft: `2px solid ${CRIMSON}65` }),
           }}
         >
           {isHalf && (
-            <Typography sx={{ color: `${BEIGE}cc`, fontFamily: FONT, fontSize: "1.25rem", letterSpacing: "0.03em", fontWeight: 500 }}>
+            <Typography sx={{ color: `${BEIGE}cc`, fontFamily: FONT, fontSize: isMobile ? "0.75rem" : "1.25rem", letterSpacing: "0.03em", fontWeight: 500 }}>
               {time}
             </Typography>
           )}
@@ -152,11 +181,11 @@ export default function Timetable() {
       <Box sx={{ position: "relative", zIndex: 2, fontSize: "1rem", color: BEIGE, minHeight: "100vh", display: "flex", flexDirection: "column" }}>
 
         {/* Kontrollipalkki */}
-        <Box sx={controlBarSx}>
+        <Box sx={{ ...controlBarSx, flexWrap: "wrap", gap: isMobile ? 1 : 2, p: isMobile ? 1 : 2 }}>
           <Box sx={{ flexShrink: 0, mr: 1 }}>
-            <img src={sacredOathLogo} alt="Sacred Oath" style={{ height: 100, objectFit: "contain", display: "block" }} />
+            <img src={sacredOathLogo} alt="Sacred Oath" style={{ height: isMobile ? 55 : 100, objectFit: "contain", display: "block" }} />
           </Box>
-          <FormControl variant="outlined" sx={{ minWidth: 220 }}>
+          <FormControl variant="outlined" sx={{ minWidth: isMobile ? 140 : 220 }}>
             <Select
               value={selectedDay}
               onChange={e => handleDayChange(e.target.value)}
@@ -199,7 +228,7 @@ export default function Timetable() {
         </Box>
 
         {/* GRID: sticky vasen sarake + scrollattava oikea osa */}
-        <Box sx={{ display: "grid", gridTemplateColumns: `${LEFT_LABEL_WIDTH}px 1fr` }}>
+        <Box sx={{ display: "grid", gridTemplateColumns: `${leftLabelWidth}px 1fr` }}>
 
           {/* Vasen sticky sarake */}
           <Box sx={{
@@ -211,7 +240,7 @@ export default function Timetable() {
           }}>
             {/* Ylärivin day-label */}
             <Box sx={{
-              height: TIME_LABEL_HEIGHT,
+              height: timeLabelHeight,
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -220,7 +249,7 @@ export default function Timetable() {
               flexShrink: 0,
             }}>
               <Typography sx={{
-                fontFamily: FONT, fontSize: "1.4rem", fontWeight: "bold",
+                fontFamily: FONT, fontSize: isMobile ? "0.75rem" : "1.4rem", fontWeight: "bold",
                 letterSpacing: "0.1em", textTransform: "uppercase", color: BEIGE,
                 userSelect: "none",
               }}>
@@ -233,16 +262,16 @@ export default function Timetable() {
               <Box
                 key={i}
                 sx={{
-                  height: STAGE_TOTAL_HEIGHT,
+                  height: stageTotalHeight,
                   background: i % 2 === 0 ? "rgba(4,0,0,0.88)" : "rgba(10,2,2,0.88)",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
                   flexShrink: 0,
-                  px: "8px",
+                  px: isMobile ? "4px" : "8px",
                 }}
               >
-                <Box sx={{ ...stageNameSx(stage.color), width: "100%", height: STAGE_ROW_HEIGHT, marginRight: 0 }}>
+                <Box sx={{ ...stageNameSx(stage.color), width: "100%", height: stageRowHeight, marginRight: 0, fontSize: isMobile ? "0.75rem" : undefined }}>
                   {stage.name}
                 </Box>
               </Box>
@@ -250,7 +279,7 @@ export default function Timetable() {
 
             {/* Alarivin day-label */}
             <Box sx={{
-              height: TIME_LABEL_HEIGHT,
+              height: timeLabelHeight,
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -259,7 +288,7 @@ export default function Timetable() {
               flexShrink: 0,
             }}>
               <Typography sx={{
-                fontFamily: FONT, fontSize: "1.4rem", fontWeight: "bold",
+                fontFamily: FONT, fontSize: isMobile ? "0.75rem" : "1.4rem", fontWeight: "bold",
                 letterSpacing: "0.1em", textTransform: "uppercase", color: BEIGE,
                 userSelect: "none",
               }}>
@@ -292,7 +321,7 @@ export default function Timetable() {
                 display: "flex",
                 background: "rgba(4,0,0,0.95)",
                 borderBottom: `2px solid ${CRIMSON}85`,
-                height: TIME_LABEL_HEIGHT,
+                height: timeLabelHeight,
               }}>
                 {renderTimeCells()}
               </Box>
@@ -303,8 +332,8 @@ export default function Timetable() {
                   key={i}
                   sx={{
                     display: "grid",
-                    gridTemplateColumns: `repeat(${timeLabels.length}, ${TIME_COLUMN_WIDTH_PX}px)`,
-                    height: STAGE_TOTAL_HEIGHT,
+                    gridTemplateColumns: `repeat(${timeLabels.length}, ${timeColWidth}px)`,
+                    height: stageTotalHeight,
                     pt: `${M_TOP * 8}px`,
                     pb: `${M_BOT * 8}px`,
                     background: i % 2 === 0 ? "rgba(4,0,0,0.62)" : "rgba(10,2,2,0.62)",
@@ -323,6 +352,7 @@ export default function Timetable() {
                         isFavorite={isFav}
                         showOnlyFav={showOnlyFav}
                         onToggle={() => toggleFav(eid)}
+                        isMobile={isMobile}
                       />
                     );
                   })}
@@ -337,7 +367,7 @@ export default function Timetable() {
                 display: "flex",
                 background: "rgba(4,0,0,0.95)",
                 borderTop: `2px solid ${CRIMSON}85`,
-                height: TIME_LABEL_HEIGHT,
+                height: timeLabelHeight,
               }}>
                 {renderTimeCells()}
               </Box>
@@ -345,8 +375,8 @@ export default function Timetable() {
               {/* NOW-viiva */}
               {showCurrentLine && currentTimeIndex !== null && currentTimeIndex > 0 && (
                 <Box sx={{
-                  ...nowLineSx(0, currentTimeIndex, TIME_COLUMN_WIDTH_PX, verticalLinesH),
-                  left: currentTimeIndex * TIME_COLUMN_WIDTH_PX,
+                  ...nowLineSx(0, currentTimeIndex, timeColWidth, verticalLinesH),
+                  left: currentTimeIndex * timeColWidth,
                 }}>
                   <Box sx={nowBadgeSx}>NOW</Box>
                   <Box sx={nowLineStemSx(CRIMSON, verticalLinesH)} />
