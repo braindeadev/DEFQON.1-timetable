@@ -149,7 +149,7 @@ export default function Timetable() {
         zIndex: 1, pointerEvents: "none",
       }} />
 
-      <Box sx={{ position: "relative", zIndex: 2, fontSize: "1rem", color: BEIGE }}>
+      <Box sx={{ position: "relative", zIndex: 2, fontSize: "1rem", color: BEIGE, minHeight: "100vh", display: "flex", flexDirection: "column" }}>
 
         {/* Kontrollipalkki */}
         <Box sx={controlBarSx}>
@@ -389,6 +389,9 @@ export default function Timetable() {
           </DialogActions>
         </Dialog>
 
+        {/* Kasvava tyhjä tila joka työntää footerin alas */}
+        <Box sx={{ flex: 1, minHeight: 80 }} />
+
         {/* Footer */}
         <Box sx={{
           display: "flex",
@@ -396,7 +399,6 @@ export default function Timetable() {
           alignItems: "center",
           py: 3,
           px: 3,
-          mt: 4,
           borderTop: `2px solid ${CRIMSON}45`,
           background: "rgba(2,0,0,0.95)",
           gap: 2,
