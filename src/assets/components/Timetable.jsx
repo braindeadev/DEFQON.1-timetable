@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useRef, useEffect } from "react";
 import scheduleData from "../data/scheduleData";
 import {
   TIME_COLUMN_WIDTH_PX,
@@ -10,7 +10,6 @@ import {
   Switch, FormControlLabel, Button, Dialog, DialogTitle,
   DialogContent, DialogActions, IconButton,
 } from "@mui/material";
-import { styled } from "@mui/material/styles";
 import CloseIcon from "@mui/icons-material/Close";
 
 import { EventCard } from "./EventCard";
@@ -18,8 +17,6 @@ import { useFavorites } from "./hooks/useFavorites";
 import { useNowLine } from "./hooks/useNowLine";
 import {
   stageNameSx,
-  stageRowSx,
-  timeRowSx,
   selectSx,
   menuItemSx,
   controlBarSx,
@@ -33,13 +30,11 @@ import {
   nowBadgeSx,
   nowLineStemSx,
 } from "../components/styles/stageRowStyles";
-import { BEIGE, BEIGE_L, CRIMSON, FONT, DARK_BG, MENU_BG } from "../components/styles/palette";
-import {dayLabelSx} from "../components/styles/stageRowStyles";
+import { BEIGE, CRIMSON, FONT, MENU_BG } from "../components/styles/palette";
 
 import sacredOathLogo from "../images/1773305430605_image.png";
 import bgImage from "../images/20240630_225308_dq1_24_album_chronologisch.jpg";
 
-// ── Layout-vakiot ──────────────────────────────────────────────
 const LEFT_LABEL_WIDTH  = 150;
 const TIME_LABEL_HEIGHT = 60;
 const STAGE_ROW_HEIGHT  = 90;
@@ -47,43 +42,8 @@ const M_TOP = 0.5;
 const M_BOT = 0.5;
 const STAGE_TOTAL_HEIGHT = STAGE_ROW_HEIGHT + (M_TOP + M_BOT) * 8;
 
-// ── Apufunktio: tapahtuma-ID ───────────────────────────────────
 const makeEventId = (selectedDay, stageName, eventName, start) =>
   `${selectedDay}-${stageName}-${eventName}-${start}`;
-
-// ══════════════════════════════════════════════════════════════
-
-// ── Yhteinen aikarivi-komponentti (ylä- ja alarivi) ────────────
-function TimeRow({ timeLabels, leftLabelWidth, timeColumnWidth, timeLabelHeight, borderSide, label }) {
-  return (
-    <Box sx={{ ...timeRowSx(timeLabels.length, leftLabelWidth, timeColumnWidth, borderSide), overflow: "hidden" }}>
-      <Box sx={{ ...dayLabelSx, width: leftLabelWidth, flexShrink: 0 }}>{label ?? ""}</Box>
-      {timeLabels.map((time, i) => {
-        const min = Number(time.split(":")[1]);
-        const isHalf = min % 30 === 0;
-        const isQuarter = min % 15 === 0;
-        return (
-          <Box
-            key={i}
-            sx={{
-              height: timeLabelHeight,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              ...(isQuarter && { borderLeft: `2px solid ${CRIMSON}65`, paddingLeft: 1.5}),
-            }}
-          >
-            {isHalf && (
-              <Typography sx={{ color: `${BEIGE}cc`, fontFamily: FONT, fontSize: "1.25rem", letterSpacing: "0.03em", fontWeight: 500 }}>
-                {time}
-              </Typography>
-            )}
-          </Box>
-        );
-      })}
-    </Box>
-  );
-}
 
 export default function Timetable() {
   const [selectedDay, setSelectedDay] = useState(() => {
@@ -107,9 +67,74 @@ export default function Timetable() {
   const [showOnlyFav, setShowOnlyFav] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
 
+  // Hiiren drag -> horisontaalinen scroll
+  const scrollRef = useRef(null);
+  const dragState = useRef({ dragging: false, startX: 0, scrollLeft: 0 });
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+
+    const onMouseDown = (e) => {
+      dragState.current = { dragging: true, startX: e.pageX, scrollLeft: el.scrollLeft };
+      el.style.cursor = "grabbing";
+      el.style.userSelect = "none";
+    };
+
+    const onMouseMove = (e) => {
+      if (!dragState.current.dragging) return;
+      e.preventDefault();
+      const dx = e.pageX - dragState.current.startX;
+      el.scrollLeft = dragState.current.scrollLeft - dx;
+    };
+
+    const onMouseUp = () => {
+      dragState.current.dragging = false;
+      el.style.cursor = "grab";
+      el.style.userSelect = "";
+    };
+
+    el.addEventListener("mousedown", onMouseDown);
+    window.addEventListener("mousemove", onMouseMove);
+    window.addEventListener("mouseup", onMouseUp);
+    el.style.cursor = "grab";
+
+    return () => {
+      el.removeEventListener("mousedown", onMouseDown);
+      window.removeEventListener("mousemove", onMouseMove);
+      window.removeEventListener("mouseup", onMouseUp);
+    };
+  }, []);
+
+  const renderTimeCells = () =>
+    timeLabels.map((time, i) => {
+      const min = Number(time.split(":")[1]);
+      const isHalf = min % 30 === 0;
+      const isQuarter = min % 15 === 0;
+      return (
+        <Box
+          key={i}
+          sx={{
+            width: TIME_COLUMN_WIDTH_PX,
+            flexShrink: 0,
+            height: TIME_LABEL_HEIGHT,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            ...(isQuarter && { borderLeft: `2px solid ${CRIMSON}65`, paddingLeft: 1.5 }),
+          }}
+        >
+          {isHalf && (
+            <Typography sx={{ color: `${BEIGE}cc`, fontFamily: FONT, fontSize: "1.25rem", letterSpacing: "0.03em", fontWeight: 500 }}>
+              {time}
+            </Typography>
+          )}
+        </Box>
+      );
+    });
+
   return (
     <>
-      {/* Taustakuva */}
       <Box sx={{
         position: "fixed", inset: 0,
         backgroundImage: `url(${bgImage})`,
@@ -118,26 +143,19 @@ export default function Timetable() {
         backgroundAttachment: "fixed",
         zIndex: 0,
       }} />
-      {/* Tumma peite kuvan päällä */}
       <Box sx={{
         position: "fixed", inset: 0,
         background: "rgba(0,0,0,0.72)",
         zIndex: 1, pointerEvents: "none",
       }} />
 
-      {/* ── Sisältö ── */}
-      <Box sx={{
-        position: "relative", zIndex: 2,
-        minWidth: `${LEFT_LABEL_WIDTH + totalWidth}px`,
-        fontSize: "1rem", color: BEIGE, margin: "0 auto",
-      }}>
+      <Box sx={{ position: "relative", zIndex: 2, fontSize: "1rem", color: BEIGE }}>
 
         {/* Kontrollipalkki */}
         <Box sx={controlBarSx}>
-          <Box sx={{flexShrink: 0, mr: 1 }}>
+          <Box sx={{ flexShrink: 0, mr: 1 }}>
             <img src={sacredOathLogo} alt="Sacred Oath" style={{ height: 100, objectFit: "contain", display: "block" }} />
           </Box>
-
           <FormControl variant="outlined" sx={{ minWidth: 220 }}>
             <Select
               value={selectedDay}
@@ -161,7 +179,6 @@ export default function Timetable() {
               ))}
             </Select>
           </FormControl>
-
           <FormControlLabel
             control={
               <Switch
@@ -176,72 +193,169 @@ export default function Timetable() {
             label="Favorites Only"
             sx={{ color: `${BEIGE}cc`, "& .MuiFormControlLabel-label": { fontFamily: FONT, fontSize: "1rem", letterSpacing: "0.1em" } }}
           />
-
           <Button variant="outlined" onClick={() => setConfirmOpen(true)} sx={clearBtnSx}>
             Clear Favorites
           </Button>
         </Box>
 
-          {/* Grid-alue: ylä-timerow + stagerivet + ala-timerow */}
-          <Box sx={{ position: "relative" }}>
+        {/* GRID: sticky vasen sarake + scrollattava oikea osa */}
+        <Box sx={{ display: "grid", gridTemplateColumns: `${LEFT_LABEL_WIDTH}px 1fr` }}>
 
-            {/* AIKA-AKSELI (Yläpalkki) */}
-            <TimeRow
-              timeLabels={timeLabels}
-              leftLabelWidth={LEFT_LABEL_WIDTH}
-              timeColumnWidth={TIME_COLUMN_WIDTH_PX}
-              timeLabelHeight={TIME_LABEL_HEIGHT}
-              borderSide="bottom"
-              label={selectedDay}
-            />
+          {/* Vasen sticky sarake */}
+          <Box sx={{
+            position: "sticky",
+            left: 0,
+            zIndex: 30,
+            display: "flex",
+            flexDirection: "column",
+          }}>
+            {/* Ylärivin day-label */}
+            <Box sx={{
+              height: TIME_LABEL_HEIGHT,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              background: "rgba(4,0,0,0.95)",
+              borderBottom: `2px solid ${CRIMSON}85`,
+              flexShrink: 0,
+            }}>
+              <Typography sx={{
+                fontFamily: FONT, fontSize: "1.4rem", fontWeight: "bold",
+                letterSpacing: "0.1em", textTransform: "uppercase", color: BEIGE,
+                userSelect: "none",
+              }}>
+                {selectedDay}
+              </Typography>
+            </Box>
 
-            {/* Vaiheiden rivit */}
+            {/* Stage-nimet */}
             {stages.map((stage, i) => (
               <Box
                 key={i}
-                sx={stageRowSx(i % 2 === 0, timeLabels.length, LEFT_LABEL_WIDTH, TIME_COLUMN_WIDTH_PX, STAGE_TOTAL_HEIGHT, M_TOP, M_BOT)}
+                sx={{
+                  height: STAGE_TOTAL_HEIGHT,
+                  background: i % 2 === 0 ? "rgba(4,0,0,0.88)" : "rgba(10,2,2,0.88)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  flexShrink: 0,
+                  px: "8px",
+                }}
               >
-                <Box sx={stageNameSx(stage.color)}>
+                <Box sx={{ ...stageNameSx(stage.color), width: "100%", height: STAGE_ROW_HEIGHT, marginRight: 0 }}>
                   {stage.name}
                 </Box>
-
-                {stage.events.map((event, j) => {
-                  const eid   = makeEventId(selectedDay, stage.name, event.name, event.start);
-                  const isFav = favorites.includes(eid);
-                  return (
-                    <EventCard
-                      key={j}
-                      event={event}
-                      dayStart={dayStart}
-                      stageColor={stage.color}
-                      isFavorite={isFav}
-                      showOnlyFav={showOnlyFav}
-                      onToggle={() => toggleFav(eid)}
-                    />
-                  );
-                })}
               </Box>
             ))}
 
-            {/* Aikaleima-rivi (alhaalla) */}
-            <TimeRow
-              timeLabels={timeLabels}
-              leftLabelWidth={LEFT_LABEL_WIDTH}
-              timeColumnWidth={TIME_COLUMN_WIDTH_PX}
-              timeLabelHeight={TIME_LABEL_HEIGHT}
-              borderSide="top"
-              label={selectedDay}
-            />
-
-            {/* NOW-viiva: alkaa gridin yläreunasta (top=0), kattaa koko grid-alueen */}
-            {showCurrentLine && currentTimeIndex !== null && currentTimeIndex > 0 && (
-              <Box sx={nowLineSx(LEFT_LABEL_WIDTH, currentTimeIndex, TIME_COLUMN_WIDTH_PX, verticalLinesH)}>
-                <Box sx={nowBadgeSx}>NOW</Box>
-                <Box sx={nowLineStemSx(CRIMSON, verticalLinesH)} />
-              </Box>
-            )}
-
+            {/* Alarivin day-label */}
+            <Box sx={{
+              height: TIME_LABEL_HEIGHT,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              background: "rgba(4,0,0,0.95)",
+              borderTop: `2px solid ${CRIMSON}85`,
+              flexShrink: 0,
+            }}>
+              <Typography sx={{
+                fontFamily: FONT, fontSize: "1.4rem", fontWeight: "bold",
+                letterSpacing: "0.1em", textTransform: "uppercase", color: BEIGE,
+                userSelect: "none",
+              }}>
+                {selectedDay}
+              </Typography>
+            </Box>
           </Box>
+
+          {/* Scrollattava oikea osa */}
+          <Box
+            ref={scrollRef}
+            sx={{
+              flex: 1,
+              overflowX: "auto",
+              overflowY: "hidden",
+              "&::-webkit-scrollbar": { height: 6 },
+              "&::-webkit-scrollbar-track": { background: "rgba(0,0,0,0.3)" },
+              "&::-webkit-scrollbar-thumb": { background: `${CRIMSON}88`, borderRadius: 3 },
+              "&::-webkit-scrollbar:vertical": { width: 0 },
+              cursor: "grab",
+            }}
+          >
+            <Box sx={{ width: totalWidth, position: "relative" }}>
+
+              {/* Ylä-timerow (sticky top) */}
+              <Box sx={{
+                position: "sticky",
+                top: 0,
+                zIndex: 20,
+                display: "flex",
+                background: "rgba(4,0,0,0.95)",
+                borderBottom: `2px solid ${CRIMSON}85`,
+                height: TIME_LABEL_HEIGHT,
+              }}>
+                {renderTimeCells()}
+              </Box>
+
+              {/* Stage-rivit */}
+              {stages.map((stage, i) => (
+                <Box
+                  key={i}
+                  sx={{
+                    display: "grid",
+                    gridTemplateColumns: `repeat(${timeLabels.length}, ${TIME_COLUMN_WIDTH_PX}px)`,
+                    height: STAGE_TOTAL_HEIGHT,
+                    pt: `${M_TOP * 8}px`,
+                    pb: `${M_BOT * 8}px`,
+                    background: i % 2 === 0 ? "rgba(4,0,0,0.62)" : "rgba(10,2,2,0.62)",
+                    position: "relative",
+                  }}
+                >
+                  {stage.events.map((event, j) => {
+                    const eid   = makeEventId(selectedDay, stage.name, event.name, event.start);
+                    const isFav = favorites.includes(eid);
+                    return (
+                      <EventCard
+                        key={j}
+                        event={event}
+                        dayStart={dayStart}
+                        stageColor={stage.color}
+                        isFavorite={isFav}
+                        showOnlyFav={showOnlyFav}
+                        onToggle={() => toggleFav(eid)}
+                      />
+                    );
+                  })}
+                </Box>
+              ))}
+
+              {/* Ala-timerow (sticky bottom) */}
+              <Box sx={{
+                position: "sticky",
+                bottom: 0,
+                zIndex: 20,
+                display: "flex",
+                background: "rgba(4,0,0,0.95)",
+                borderTop: `2px solid ${CRIMSON}85`,
+                height: TIME_LABEL_HEIGHT,
+              }}>
+                {renderTimeCells()}
+              </Box>
+
+              {/* NOW-viiva */}
+              {showCurrentLine && currentTimeIndex !== null && currentTimeIndex > 0 && (
+                <Box sx={{
+                  ...nowLineSx(0, currentTimeIndex, TIME_COLUMN_WIDTH_PX, verticalLinesH),
+                  left: currentTimeIndex * TIME_COLUMN_WIDTH_PX,
+                }}>
+                  <Box sx={nowBadgeSx}>NOW</Box>
+                  <Box sx={nowLineStemSx(CRIMSON, verticalLinesH)} />
+                </Box>
+              )}
+
+            </Box>
+          </Box>
+        </Box>
 
         {/* Vahvistusdialogi */}
         <Dialog
@@ -282,7 +396,7 @@ export default function Timetable() {
           alignItems: "center",
           py: 3,
           px: 3,
-          mt: 50,
+          mt: 4,
           borderTop: `2px solid ${CRIMSON}45`,
           background: "rgba(2,0,0,0.95)",
           gap: 2,
