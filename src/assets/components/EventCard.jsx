@@ -9,8 +9,8 @@ import {
   eventTimeSx,
   favIconSx,
   favBorderIconSx,
-} from "../components/styles/stageRowStyles";
-import { WHITE } from "../components/styles/palette";
+} from "./styles/stageRowStyles";
+import { WHITE } from "./styles/palette";
 
 export const EventCard = ({ event, dayStart, stageColor, isFavorite, showOnlyFav, onToggle, isMobile }) => {
   const colStart = timeToIndex(event.start, dayStart);

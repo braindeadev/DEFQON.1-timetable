@@ -29,8 +29,8 @@ import {
   nowLineSx,
   nowBadgeSx,
   nowLineStemSx,
-} from "../components/styles/stageRowStyles";
-import { BEIGE, CRIMSON, FONT, MENU_BG } from "../components/styles/palette";
+} from "./styles/stageRowStyles";
+import { BEIGE, CRIMSON, FONT, MENU_BG } from "./styles/palette";
 
 import sacredOathLogo from "../images/1773305430605_image.png";
 import bgImage from "../images/20240630_225308_dq1_24_album_chronologisch.jpg";
@@ -108,12 +108,17 @@ export default function Timetable() {
     window.addEventListener("mouseup", onMouseUp);
     el.style.cursor = "grab";
 
-    // Touch-tuki mobiilille
+    // Touch-tuki mobiilille — yhden sormen veto scrollaa, kahden sormen pinch zoomaa vapaasti
     const onTouchStart = (e) => {
+      if (e.touches.length !== 1) return; // pinch-to-zoom: älä häiritse
       const touch = e.touches[0];
       dragState.current = { dragging: true, startX: touch.pageX, scrollLeft: el.scrollLeft };
     };
     const onTouchMove = (e) => {
+      if (e.touches.length !== 1) {
+        dragState.current.dragging = false; // keskeytä drag jos toinen sormi lisätään
+        return;
+      }
       if (!dragState.current.dragging) return;
       const touch = e.touches[0];
       const dx = touch.pageX - dragState.current.startX;
@@ -135,7 +140,7 @@ export default function Timetable() {
     };
   }, []);
 
-  const renderTimeCells = () =>
+  const renderTimeCells = useCallback(() =>
     timeLabels.map((time, i) => {
       const min = Number(time.split(":")[1]);
       const isHalf = min % 30 === 0;
@@ -149,18 +154,18 @@ export default function Timetable() {
             height: timeLabelHeight,
             display: "flex",
             alignItems: "center",
-            justifyContent: "center",
+            pr: "4px",
             ...(isQuarter && { borderLeft: `2px solid ${CRIMSON}65` }),
           }}
         >
           {isHalf && (
-            <Typography sx={{ color: `${BEIGE}cc`, fontFamily: FONT, fontSize: isMobile ? "0.75rem" : "1.25rem", letterSpacing: "0.03em", fontWeight: 500 }}>
+            <Typography sx={{ color: `${BEIGE}cc`, fontFamily: FONT, fontSize: isMobile ? "0.75rem" : "1.25rem", letterSpacing: "0.03em", fontWeight: 500, }}>
               {time}
             </Typography>
           )}
         </Box>
       );
-    });
+    }), [timeLabels, timeColWidth, timeLabelHeight, isMobile]);
 
   return (
     <>
@@ -425,19 +430,16 @@ export default function Timetable() {
         {/* Footer */}
         <Box sx={{
           display: "flex",
-          justifyContent: "space-between",
+          justifyContent: "center",
           alignItems: "center",
           py: 3,
           px: 3,
           borderTop: `2px solid ${CRIMSON}45`,
           background: "rgba(2,0,0,0.95)",
-          gap: 2,
         }}>
-          {["left", "center", "right"].map(align => (
-            <Typography key={align} sx={{ color: `${BEIGE}66`, fontFamily: FONT, textAlign: align, flex: 1 }}>
-              This is a personal fan project and is not affiliated with or endorsed by Q-dance or ID&T!
-            </Typography>
-          ))}
+          <Typography sx={{ color: `${BEIGE}cc`, fontFamily: FONT, textAlign: "center" }}>
+            This is a personal fan project and is not affiliated with or endorsed by Q-dance or ID&T!
+          </Typography>
         </Box>
 
       </Box>

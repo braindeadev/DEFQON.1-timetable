@@ -1,4 +1,3 @@
-import { Padding } from "@mui/icons-material";
 import { WHITE, BLACK, CRIMSON, BEIGE, BEIGE_D, FONT, DARK_BG, PANEL_BG, PANEL_ALT, SELECT_BG, MENU_BG } from "./palette";
 
 // ── Vaihepalkin nimi-solu ──────────────────────────────────────
@@ -162,9 +161,10 @@ export const clearBtnSx = {
   fontFamily: FONT,
   fontSize: "1rem",
   letterSpacing: "0.12em",
+  background: `${CRIMSON2}33`,
   "&:hover": {
     borderColor: CRIMSON,
-    background: `${CRIMSON}22`,
+    background: `${CRIMSON2}55`,
   },
 };
 
