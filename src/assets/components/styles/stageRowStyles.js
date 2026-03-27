@@ -1,4 +1,4 @@
-import { WHITE, BLACK, CRIMSON, BEIGE, BEIGE_D, FONT, DARK_BG, PANEL_BG, PANEL_ALT, SELECT_BG, MENU_BG } from "./palette";
+import { WHITE, BLACK, CRIMSON, CRIMSON2, BEIGE, BEIGE_D, FONT, DARK_BG, PANEL_BG, PANEL_ALT, SELECT_BG, MENU_BG } from "./palette";
 
 // ── Vaihepalkin nimi-solu ──────────────────────────────────────
 // FIX: automatically switches to dark text for light-colored stages (WHITE, YELLOW, etc.)
