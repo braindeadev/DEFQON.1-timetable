@@ -1,5 +1,5 @@
 import React from "react";
-import Timetable from "./assets/components/Timetable";
+import Timetable from "./components/timetable/Timetable";
 import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
 
 const darkTheme = createTheme({
@@ -17,7 +17,6 @@ const darkTheme = createTheme({
 function App() {
   return (
     <>
-      {/* Bebas Neue = Defqon-tyylinen kapea bold-fontti, Anton = varafontti */}
       <link
         href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Anton&family=Orbitron:wght@400;700;900&display=swap"
         rel="stylesheet"

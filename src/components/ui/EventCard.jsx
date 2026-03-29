@@ -3,23 +3,23 @@ import { Paper, Typography } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { timeToIndex } from "../../utils/timeUtils";
-import {
-  eventCardSx,
-  eventNameSx,
-  eventTimeSx,
-  favIconSx,
-  favBorderIconSx,
-} from "./styles/stageRowStyles";
-import { WHITE } from "./styles/palette";
+import { eventCardSx, eventNameSx, eventTimeSx, favIconSx, favBorderIconSx } from "../../styles/stageRowStyles";
+import { WHITE } from "../../styles/palette";
 
-export const EventCard = ({ event, dayStart, stageColor, isFavorite, showOnlyFav, onToggle, isMobile }) => {
+export const EventCard = ({ event, dayStart, stageColor, isFavorite, showOnlyFav, onToggle, isMobile, wasDragged }) => {
   const colStart = timeToIndex(event.start, dayStart);
   const colEnd   = timeToIndex(event.end,   dayStart);
   const gray     = showOnlyFav && !isFavorite;
 
+  const handleClick = () => {
+    if (wasDragged?.current) return; // drag oli käynnissä — älä valitse
+    onToggle();
+  };
+
   return (
     <Paper
       elevation={0}
+      onClick={handleClick}
       sx={{
         gridColumn: `${Math.floor(colStart) + 1} / ${Math.ceil(colEnd) + 1}`,
         position: "relative",
@@ -34,8 +34,8 @@ export const EventCard = ({ event, dayStart, stageColor, isFavorite, showOnlyFav
         {event.start} – {event.end}
       </Typography>
       {isFavorite
-        ? <FavoriteIcon sx={{ ...favIconSx(WHITE), cursor: "pointer" }} onMouseDown={e => e.stopPropagation()} onClick={onToggle} />
-        : <FavoriteBorderIcon sx={{ ...favBorderIconSx, cursor: "pointer" }} onMouseDown={e => e.stopPropagation()} onClick={onToggle} />
+        ? <FavoriteIcon sx={{ ...favIconSx(WHITE) }} />
+        : <FavoriteBorderIcon sx={{ ...favBorderIconSx }} />
       }
     </Paper>
   );

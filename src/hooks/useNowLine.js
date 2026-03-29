@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import { DateTime } from "luxon";
-import { ALLOWED_DATE_DAYS } from "../../../utils/config.js";
-import { timeToIndex } from "../../../utils/timeUtils.js";
+import { ALLOWED_DATE_DAYS } from "../utils/config.js";
+import { timeToIndex } from "../utils/timeUtils.js";
 
 export function useNowLine(selectedDay, dayStart) {
   const [currentTimeIndex, setCurrentTimeIndex] = useState(null);
-  const [showCurrentLine,  setShowCurrentLine]  = useState(false);
+  const [showCurrentLine, setShowCurrentLine] = useState(false);
 
   useEffect(() => {
     const update = () => {
