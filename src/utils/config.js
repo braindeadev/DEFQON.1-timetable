@@ -6,8 +6,8 @@ export const DEFAULT_DAY = "Thursday";
 // NOW-viiva näkyy vain niille päiville, joiden päivämäärä vastaa tämänpäiväistä datumia.
 // Päivitä päivämäärät vastaamaan oikeita festarin päiviä ennen julkaisua.
 export const ALLOWED_DATE_DAYS = new Set([
-  "2026-06-30_Thursday",
-  "2026-06-30_Friday",
-  "2026-06-30_Saturday",
-  "2026-06-30_Sunday",
+  "2026-03-30_Thursday",
+  "2026-03-30_Friday",
+  "2026-03-30_Saturday",
+  "2026-03-30_Sunday",
 ]);

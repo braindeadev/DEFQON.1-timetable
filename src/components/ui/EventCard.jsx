@@ -30,7 +30,7 @@ export const EventCard = ({ event, dayStart, stageColor, isFavorite, showOnlyFav
     onToggle();
   };
 
-  return (
+return (
     <Paper
       elevation={0}
       onClick={handleClick}
@@ -42,16 +42,15 @@ export const EventCard = ({ event, dayStart, stageColor, isFavorite, showOnlyFav
       }}
     >
       {!gray && <ChevronBg />}
-
-      <Typography noWrap sx={{ ...eventNameSx, fontSize: isMobile ? "0.7rem" : undefined, position: "relative" }}>
+      <Typography noWrap sx={{ ...eventNameSx, fontSize: isMobile ? "0.7rem" : undefined }}>
         {event.name}
       </Typography>
-      <Typography sx={{ ...eventTimeSx, fontSize: isMobile ? "0.6rem" : undefined, position: "relative" }}>
+      <Typography sx={{ ...eventTimeSx, fontSize: isMobile ? "0.6rem" : undefined }}>
         {event.start} – {event.end}
       </Typography>
       {isFavorite
-        ? <FavoriteIcon sx={{ ...favIconSx(WHITE), position: "relative" }} />
-        : <FavoriteBorderIcon sx={{ ...favBorderIconSx, position: "relative" }} />
+        ? <FavoriteIcon sx={{ ...favIconSx(WHITE) }} />
+        : <FavoriteBorderIcon sx={{ ...favBorderIconSx }} />
       }
     </Paper>
   );
