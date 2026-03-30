@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Typography } from "@mui/material";
 import { stageNameSx } from "../../styles/stageRowStyles";
-import { BEIGE_D, BEIGE, CRIMSON, FONT, getStageColor } from "../../styles/palette";
+import { BEIGE_L, BEIGE, CRIMSON, FONT, getStageColor } from "../../styles/palette";
 
 const M_TOP = 0.5;
 const M_BOT = 0.5;
@@ -80,12 +80,12 @@ export const StageColumn = ({ stages, selectedDay, stageRowHeight, timeLabelHeig
             py: "4px",
           }}>
             {/* Yläreunan kolmiot — kärki alas */}
-            <TriangleRow color={BEIGE_D} width={boxWidth} pointing="down" />
+            <TriangleRow color={BEIGE} width={boxWidth} pointing="down" />
 
             {/* Stage-nimi */}
             <Box sx={{
               fontFamily: FONT,
-              fontSize: isMobile ? "0.75rem" : "1.50rem",
+              fontSize: isMobile ? "0.75rem" : "1.75rem",
               fontWeight: "bold",
               letterSpacing: "0.1em",
               textShadow: "0 1px 5px rgba(0,0,0,0.60)",
@@ -97,7 +97,7 @@ export const StageColumn = ({ stages, selectedDay, stageRowHeight, timeLabelHeig
             </Box>
 
             {/* Alareunan kolmiot — kärki ylös */}
-            <TriangleRow color={BEIGE_D} width={boxWidth} pointing="up" />
+            <TriangleRow color={BEIGE} width={boxWidth} pointing="up" />
           </Box>
         </Box>
       ))}

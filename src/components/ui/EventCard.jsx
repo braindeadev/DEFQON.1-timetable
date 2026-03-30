@@ -6,13 +6,27 @@ import { timeToIndex } from "../../utils/timeUtils";
 import { eventCardSx, eventNameSx, eventTimeSx, favIconSx, favBorderIconSx } from "../../styles/stageRowStyles";
 import { WHITE } from "../../styles/palette";
 
+const ChevronBg = () => (
+  <svg
+    style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none" }}
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <defs>
+      <pattern id="chev" x="0" y="0" width="60" height="36" patternUnits="userSpaceOnUse">
+        <polygon points="0,18 30,0 60,18 60,36 30,18 0,36" fill="black" opacity="0.04"/>
+      </pattern>
+    </defs>
+    <rect width="100%" height="100%" fill="url(#chev)"/>
+  </svg>
+);
+
 export const EventCard = ({ event, dayStart, stageColor, isFavorite, showOnlyFav, onToggle, isMobile, wasDragged }) => {
   const colStart = timeToIndex(event.start, dayStart);
   const colEnd   = timeToIndex(event.end,   dayStart);
   const gray     = showOnlyFav && !isFavorite;
 
   const handleClick = () => {
-    if (wasDragged?.current) return; // drag oli käynnissä — älä valitse
+    if (wasDragged?.current) return;
     onToggle();
   };
 
@@ -27,15 +41,17 @@ export const EventCard = ({ event, dayStart, stageColor, isFavorite, showOnlyFav
         ...eventCardSx(stageColor, gray),
       }}
     >
-      <Typography noWrap sx={{ ...eventNameSx, fontSize: isMobile ? "0.7rem" : undefined }}>
+      {!gray && <ChevronBg />}
+
+      <Typography noWrap sx={{ ...eventNameSx, fontSize: isMobile ? "0.7rem" : undefined, position: "relative" }}>
         {event.name}
       </Typography>
-      <Typography sx={{ ...eventTimeSx, fontSize: isMobile ? "0.6rem" : undefined }}>
+      <Typography sx={{ ...eventTimeSx, fontSize: isMobile ? "0.6rem" : undefined, position: "relative" }}>
         {event.start} – {event.end}
       </Typography>
       {isFavorite
-        ? <FavoriteIcon sx={{ ...favIconSx(WHITE) }} />
-        : <FavoriteBorderIcon sx={{ ...favBorderIconSx }} />
+        ? <FavoriteIcon sx={{ ...favIconSx(WHITE), position: "relative" }} />
+        : <FavoriteBorderIcon sx={{ ...favBorderIconSx, position: "relative" }} />
       }
     </Paper>
   );
