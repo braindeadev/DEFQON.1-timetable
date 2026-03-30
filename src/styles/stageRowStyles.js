@@ -1,7 +1,6 @@
 import { WHITE, BLACK, CRIMSON, BEIGE, BEIGE_D, FONT, DARK_BG, PANEL_BG, PANEL_ALT, SELECT_BG, MENU_BG } from "./palette";
 
 // ── Vaihepalkin nimi-solu ──────────────────────────────────────
-// FIX: automatically switches to dark text for light-colored stages (WHITE, YELLOW, etc.)
 export const stageNameSx = (color) => ({
   textAlign: "center",
   fontWeight: "bold",
@@ -28,11 +27,11 @@ export const dayLabelSx = {
   backgroundColor: "transparent",
   textAlign: "center",
   fontWeight: "bold",
-  height: 60, // TIME_LABEL_HEIGHT
+  height: 60,
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  fontSize: "1.85rem",
+  fontSize: "1.95rem",
   userSelect: "none",
   letterSpacing: "0.1em",
   textTransform: "uppercase",
@@ -151,7 +150,6 @@ export const controlBarSx = {
   p: 2,
   gap: 2,
   background: "transparent",
-  borderBottom: `2px solid ${CRIMSON}45`,
 };
 
 // ── "Tyhjennä suosikit" -nappi ────────────────────────────────

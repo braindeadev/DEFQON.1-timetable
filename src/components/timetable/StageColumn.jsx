@@ -54,6 +54,8 @@ export const StageColumn = ({ stages, selectedDay, stageRowHeight, timeLabelHeig
         background: "rgba(4,0,0,0.95)",
         borderBottom: `2px solid ${CRIMSON}85`,
         borderTop: `2px solid ${CRIMSON}85`,
+        borderRight: `2px solid ${CRIMSON}65`,
+        borderLeft: `2px solid ${CRIMSON}65`,
         flexShrink: 0,
       }}>
         <DayLabel />
@@ -106,8 +108,10 @@ export const StageColumn = ({ stages, selectedDay, stageRowHeight, timeLabelHeig
         height: timeLabelHeight,
         display: "flex", alignItems: "center", justifyContent: "center",
         background: "rgba(4,0,0,0.95)",
-        borderTop: `2px solid ${CRIMSON}85`,
         borderBottom: `2px solid ${CRIMSON}85`,
+        borderTop: `2px solid ${CRIMSON}85`,
+        borderRight: `2px solid ${CRIMSON}65`,
+        borderLeft: `2px solid ${CRIMSON}65`,
         flexShrink: 0,
       }}>
         <DayLabel />
