@@ -1,6 +1,7 @@
 import React from "react";
 import { Box } from "@mui/material";
 import { EventCard } from "../ui/EventCard";
+import { getStageColor } from "../../styles/palette";
 
 const M_TOP = 0.5;
 const M_BOT = 0.5;
@@ -32,7 +33,7 @@ export const StageRow = ({
             key={j}
             event={event}
             dayStart={dayStart}
-            stageColor={stage.color}
+            stageColor={getStageColor(stage.name)}
             isFavorite={isFav}
             showOnlyFav={showOnlyFav}
             onToggle={() => onToggleFav(eid)}

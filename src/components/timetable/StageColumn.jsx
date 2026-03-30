@@ -1,14 +1,14 @@
 import React from "react";
 import { Box, Typography } from "@mui/material";
 import { stageNameSx } from "../../styles/stageRowStyles";
-import { BEIGE, BEIGE_D, CRIMSON, FONT } from "../../styles/palette";
+import { BEIGE_D, BEIGE, CRIMSON, FONT, getStageColor } from "../../styles/palette";
 
 const M_TOP = 0.5;
 const M_BOT = 0.5;
 
-const TRIANGLE_H = 13;
-const TRIANGLE_W = 20;
-const GAP = 2;
+const TRIANGLE_H = 14;
+const TRIANGLE_W = 23;
+const GAP = 1;
 
 const TriangleRow = ({ color, width, pointing }) => {
   const count = Math.floor(width / (TRIANGLE_W + GAP));
@@ -68,7 +68,7 @@ export const StageColumn = ({ stages, selectedDay, stageRowHeight, timeLabelHeig
           px: isMobile ? "4px" : "8px",
         }}>
           <Box sx={{
-            ...stageNameSx(stage.color),
+            ...stageNameSx(getStageColor(stage.name)),
             width: "100%",
             height: stageRowHeight,
             marginRight: 0,
@@ -97,7 +97,8 @@ export const StageColumn = ({ stages, selectedDay, stageRowHeight, timeLabelHeig
             </Box>
 
             {/* Alareunan kolmiot — kärki ylös */}
-            <TriangleRow color={BEIGE_D} width={boxWidth} pointing="up" />          </Box>
+            <TriangleRow color={BEIGE_D} width={boxWidth} pointing="up" />
+          </Box>
         </Box>
       ))}
 

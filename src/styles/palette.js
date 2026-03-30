@@ -1,3 +1,28 @@
+// ── Stage-värit ────────────────────────────────────────────────
+export const STAGE_COLORS = {
+  "RED":              "#FF0000",
+  "BLUE":             "#0ADDF0",
+  "BLACK":            "#808080",
+  "INDIGO":           "#3641D7",
+  "UV":               "#D492FF",
+  "MAGENTA":          "#FF008B",
+  "MAGENTA - SILENT": "#FF008B",
+  "YELLOW":           "#F1E300",
+  "GOLD":             "#BB9551",
+  "ORANGE":           "#FF6500",
+  "PINK":             "#EE81A0",
+  "GREEN":            "#00FF00",
+  "SILVER":           "#C8D3D9",
+  "PURPLE":           "#A100FE",
+  "WHITE":            "#F9FBFD",
+  "BROWN - SILENT":   "#8B4D10",
+  "STAMPKROEG":       "#B6D7A8",
+};
+
+// Palauttaa stagen värin nimen perusteella, fallback CRIMSON
+export const getStageColor = (name) =>
+  STAGE_COLORS[name] ?? "#A60132";
+
 export const CRIMSON   = "#A60132";
 export const WHITE     = "#ffffff";
 export const CRIMSON2  = "#6E1828";

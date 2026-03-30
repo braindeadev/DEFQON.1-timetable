@@ -4,7 +4,6 @@ const scheduleData = {
     stages: [
       {
         name: "BLUE",
-        color: "#0ADDF0",
         events: [
           { name: "Vertile", start: "18:00", end: "19:00" },
           { name: "Wildstylez", start: "19:00", end: "20:00" },
@@ -15,7 +14,6 @@ const scheduleData = {
       },
       {
         name: "BLACK",
-        color: "#808080",
         events: [
           { name: "Angerfist", start: "18:00", end: "19:00" },
           { name: "Endymion & The Viper", start: "19:00", end: "20:00" },
@@ -26,7 +24,6 @@ const scheduleData = {
       },
       {
         name: "INDIGO",
-        color: "#3641D7",
         events: [
           { name: "Vexxed", start: "18:00", end: "18:45" },
           { name: "Adaro & Unresolved", start: "18:45", end: "19:30" },
@@ -38,7 +35,6 @@ const scheduleData = {
       },
       {
         name: "BROWN - SILENT",
-        color: "#8B4D10",
         events: [
           { name: "Ricardo Moreno", start: "18:00", end: "19:00" },
           { name: "Bass Chaserz & Hans Glock", start: "19:00", end: "20:00" },
@@ -49,7 +45,6 @@ const scheduleData = {
       },
       {
         name: "MAGENTA - SILENT",
-        color: "#FF008B",
         events: [
           { name: "Zelecter", start: "18:00", end: "19:00" },
           { name: "EMS", start: "19:00", end: "20:00" },
@@ -67,7 +62,6 @@ const scheduleData = {
     stages: [
       {
         name: "RED",
-        color: "#FF0000",
         events: [
           { name: "The Opening Ceremony with DR Peacock", start: "13:00", end: "14:00" },
           { name: "Galactixx", start: "14:00", end: "15:00" },
@@ -86,7 +80,6 @@ const scheduleData = {
       },
       {
         name: "BLUE",
-        color: "#0ADDF0",
         events: [
           { name: "Radianze & Sub Sonik", start: "11:00", end: "12:30" },
           { name: "Jason Payne Presents Dark Energy", start: "12:30", end: "13:00" },
@@ -107,7 +100,6 @@ const scheduleData = {
       },
       {
         name: "BLACK",
-        color: "#808080",
         events: [
           { name: "Karun", start: "11:00", end: "12:30" },
           { name: "Hardcore Confessions with Audiofreq", start: "12:30", end: "13:30" },
@@ -126,7 +118,6 @@ const scheduleData = {
       },
       {
         name: "UV",
-        color: "#D492FF",
         events: [
           { name: "Sephyx", start: "11:00", end: "12:00" },
           { name: "Demi Kanon", start: "12:00", end: "13:00" },
@@ -146,7 +137,6 @@ const scheduleData = {
       },
       {
         name: "MAGENTA",
-        color: "#FF008A",
         events: [
           { name: "2Faced", start: "11:00", end: "12:30" },
           { name: "Alpha Twins", start: "12:30", end: "14:00" },
@@ -166,7 +156,6 @@ const scheduleData = {
       },
       {
         name: "INDIGO",
-        color: "#3842DA",
         events: [
           { name: "Viva La Fist", start: "11:00", end: "12:00" },
           { name: "PL4Y", start: "12:00", end: "13:00" },
@@ -187,7 +176,6 @@ const scheduleData = {
       },
       {
         name: "YELLOW",
-        color: "#F1E300",
         events: [
           { name: "Revellers", start: "11:00", end: "12:00" },
           { name: "Aradia", start: "12:00", end: "12:45" },
@@ -207,7 +195,6 @@ const scheduleData = {
       },
       {
         name: "GOLD",
-        color: "#BB9551",
         events: [
           { name: "Zearø", start: "12:00", end: "13:00" },
           { name: "Gizmo", start: "13:00", end: "14:00" },
@@ -223,7 +210,6 @@ const scheduleData = {
       },
       {
         name: "ORANGE",
-        color: "#FF6500",
         events: [
           { name: "Cro & Steenwolk", start: "12:00", end: "13:00" },
           { name: "Stoik", start: "13:00", end: "14:00" },
@@ -237,7 +223,6 @@ const scheduleData = {
       },
       {
         name: "PINK",
-        color: "#EE81A0",
         events: [
           { name: "Themen", start: "11:00", end: "12:00" },
           { name: "Yussi", start: "12:00", end: "13:00" },
@@ -252,7 +237,6 @@ const scheduleData = {
       },
       {
         name: "STAMPKROEG",
-        color: "#B6D7A8",
         events: [
           { name: "Fiesto", start: "12:00", end: "13:30" },
           { name: "Atjoow Show", start: "13:30", end: "15:30" },
@@ -273,7 +257,6 @@ const scheduleData = {
     stages: [
       {
         name: "RED",
-        color: "#FF0000",
         events: [
           { name: "The Warming Up with Jones", start: "11:00", end: "12:00" },
           { name: "Warrior Workout", start: "12:00", end: "12:30" },
@@ -295,7 +278,6 @@ const scheduleData = {
       },
       {
         name: "BLUE",
-        color: "#0ADBEF",
         events: [
           { name: "Nightcraft", start: "11:00", end: "12:00" },
           { name: "Deetox", start: "12:00", end: "13:00" },
@@ -316,7 +298,6 @@ const scheduleData = {
       },
       {
         name: "BLACK",
-        color: "#808080",
         events: [
           { name: "Gridkiller", start: "11:30", end: "12:30" },
           { name: "Noiseflow presents: WE ARE KRACH", start: "12:30", end: "13:00" },
@@ -333,7 +314,6 @@ const scheduleData = {
       },
       {
         name: "UV",
-        color: "#D492FF",
         events: [
           { name: "Solstice", start: "12:00", end: "13:00" },
           { name: "Toneshifterz", start: "13:00", end: "14:00" },
@@ -350,7 +330,6 @@ const scheduleData = {
       },
       {
         name: "MAGENTA",
-        color: "#FE008B",
         events: [
           { name: "Sunny D", start: "11:00", end: "12:30" },
           { name: "Pat B", start: "12:30", end: "14:00" },
@@ -370,7 +349,6 @@ const scheduleData = {
       },
       {
         name: "GREEN",
-        color: "#00FF00",
         events: [
           { name: "Luna Fields", start: "11:00", end: "12:00" },
           { name: "GD_Connect", start: "12:00", end: "13:00" },
@@ -387,7 +365,6 @@ const scheduleData = {
       },
       {
         name: "YELLOW",
-        color: "#F1E300",
         events: [
           { name: "Mat Weasel Busters", start: "11:00", end: "12:00" },
           { name: "D'ort", start: "12:00", end: "12:45" },
@@ -407,7 +384,6 @@ const scheduleData = {
       },
       {
         name: "GOLD",
-        color: "#BB9551",
         events: [
           { name: "Artcore with Ruffneck", start: "11:00", end: "12:00" },
           { name: "Elitepauper DJ Team", start: "12:00", end: "13:00" },
@@ -425,7 +401,6 @@ const scheduleData = {
       },
       {
         name: "SILVER",
-        color: "#C8D3D9",
         events: [
           { name: "Le Petit Dejeuner Du Frenchcore Avec Doris & D'ort", start: "11:00", end: "12:00" },
           { name: "Nightshift", start: "12:00", end: "13:00" },
@@ -441,7 +416,6 @@ const scheduleData = {
       },
       {
         name: "PURPLE",
-        color: "#A100FE",
         events: [
           { name: "Kelvin Farheaven", start: "11:00", end: "12:00" },
           { name: "RED RACE #4", start: "12:00", end: "12:45" },
@@ -460,7 +434,6 @@ const scheduleData = {
       },
       {
         name: "STAMPKROEG",
-        color: "#B6D7A8",
         events: [
           { name: "Outsiders Vroeg Pieken", start: "12:30", end: "14:00" },
           { name: "Re-X & A-More Raw Classics", start: "14:00", end: "16:00" },
@@ -481,7 +454,6 @@ const scheduleData = {
     stages: [
       {
         name: "RED",
-        color: "#FF0000",
         events: [
           { name: "DEFQON.1 LEGENDS", start: "18:00", end: "22:45" },
           { name: "THE CLOSING RITUAL", start: "22:45", end: "23:00" }
@@ -489,7 +461,6 @@ const scheduleData = {
       },
       {
         name: "BLUE",
-        color: "#0BDBEF",
         events: [
           { name: "Voidax & Luner", start: "11:00", end: "12:00" },
           { name: "Digital Punk & Level One", start: "12:00", end: "13:00" },
@@ -508,7 +479,6 @@ const scheduleData = {
       },
             {
         name: "BLACK",
-        color: "#878787",
         events: [
           { name: "Open Airbed Concert with JDX", start: "11:00", end: "12:30" },
           { name: "The Darkraver & Vince", start: "12:30", end: "14:00" },
@@ -522,7 +492,6 @@ const scheduleData = {
       },
             {
         name: "UV",
-        color: "#D492FF",
         events: [
           { name: "Daani & Ginia", start: "11:00", end: "12:30" },
           { name: "Potato", start: "12:30", end: "13:30" },
@@ -541,7 +510,6 @@ const scheduleData = {
       },
             {
         name: "MAGENTA",
-        color: "#FF008B",
         events: [
           { name: "Consequent", start: "11:00", end: "12:00" },
           { name: "Jones", start: "12:00", end: "13:00" },
@@ -554,7 +522,6 @@ const scheduleData = {
       },
             {
         name: "GREEN",
-        color: "#00FF00",
         events: [
             { name: "Dae", start: "11:00", end: "12:00" },
             { name: "Klugt", start: "12:00", end: "13:00" },
@@ -569,7 +536,6 @@ const scheduleData = {
       },
             {
         name: "YELLOW",
-        color: "#F1E300",
         events: [
           { name: "Super Trash Bros LIVE", start: "11:00", end: "11:45" },
           { name: "D-Frek", start: "11:45", end: "12:30" },
@@ -587,7 +553,6 @@ const scheduleData = {
       },
             {
         name: "GOLD",
-        color: "#BB9551",
         events: [
           { name: "T-Go & Noxa", start: "11:00", end: "12:00" },
           { name: "Buzz Fuzz", start: "12:00", end: "13:00" },
@@ -601,7 +566,6 @@ const scheduleData = {
       },
       {
         name: "WHITE",
-        color: "#F9FBFD",
         events: [
           { name: "Bold Action", start: "11:00", end: "12:30" },
           { name: "S1ngular", start: "12:30", end: "13:15" },
@@ -615,7 +579,6 @@ const scheduleData = {
       },
             {
         name: "PURPLE",
-        color: "#A100FE",
         events: [
           { name: "Testarossa", start: "11:00", end: "12:00" },
           { name: "Yeyo", start: "12:00", end: "13:00" },
@@ -632,7 +595,6 @@ const scheduleData = {
       },
             {
         name: "STAMPKROEG",
-        color: "#B6D7A8",
         events: [
           { name: "Coenfetti", start: "12:00", end: "12:30" },
           { name: "Walter Mellow", start: "12:30", end: "13:00" },
@@ -653,4 +615,3 @@ const scheduleData = {
 };
 
 export default scheduleData;
-
