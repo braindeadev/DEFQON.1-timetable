@@ -1,8 +1,8 @@
 import React, { useCallback } from "react";
 import { Box, Typography } from "@mui/material";
-import { BEIGE, CRIMSON, FONT } from "../../styles/palette"
+import { BEIGE, CRIMSON, FONT } from "../../styles/palette";
 
-export const TimeRow = ({ timeLabels, timeColWidth, timeLabelHeight, isMobile, position }) => {
+export const TimeRow = ({ timeLabels, timeColWidth, timeLabelHeight, isMobile, isLandscape, position }) => {
   const sticky = position ?? "top";
   
   const renderCells = useCallback(() =>
@@ -18,10 +18,9 @@ export const TimeRow = ({ timeLabels, timeColWidth, timeLabelHeight, isMobile, p
             width: timeColWidth,
             flexShrink: 0,
             height: timeLabelHeight,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "flex-start", 
+            position: "relative",
             boxSizing: "border-box",
+            // Piirretään viiva solun vasempaan reunaan
             ...(i !== 0 && isQuarter && { 
               borderLeft: `2px solid ${CRIMSON}65`,
             }),
@@ -29,13 +28,23 @@ export const TimeRow = ({ timeLabels, timeColWidth, timeLabelHeight, isMobile, p
         >
           {isHalf && (
             <Typography sx={{
+              position: "absolute",
+              // Asetetaan teksti alkamaan viivan oikealta puolelta (4px irti viivasta)
+              left: "4px", 
+              top: "50%",
+              // Keskitetään ainoastaan pystysuunnassa (Y-akseli)
+              transform: "translate(0, -50%)", 
+              
               color: `${BEIGE}cc`,
               fontFamily: FONT,
-              fontSize: isMobile ? "0.75rem" : "1.25rem",
+              fontSize: isLandscape ? "0.7rem" : (isMobile ? "0.8rem" : "1.1rem"),
               letterSpacing: "0.03em",
               fontWeight: 500,
-              paddingLeft: "4px", 
               whiteSpace: "nowrap",
+              zIndex: 2,
+              
+              // Taustaväriä ei enää tarvita, koska teksti ei ole viivan päällä
+              backgroundColor: "transparent",
             }}>
               {time}
             </Typography>
@@ -43,7 +52,7 @@ export const TimeRow = ({ timeLabels, timeColWidth, timeLabelHeight, isMobile, p
         </Box>
       );
     }),
-  [timeLabels, timeColWidth, timeLabelHeight, isMobile]);
+  [timeLabels, timeColWidth, timeLabelHeight, isMobile, isLandscape]);
 
   return (
     <Box sx={{

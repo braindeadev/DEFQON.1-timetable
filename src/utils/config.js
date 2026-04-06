@@ -1,13 +1,11 @@
 export const TIME_STEP_MINUTES = 5;
-export const TIME_COLUMN_WIDTH_PX = 37;
+export const TIME_COLUMN_WIDTH_PX = 28; // 75% skaalaus oletuksena
 export const DEFAULT_DAY = "Thursday";
 
-// Festivaalipäivät: avain on muotoa "YYYY-MM-DD_Weekday"
-// NOW-viiva näkyy vain niille päiville, joiden päivämäärä vastaa tämänpäiväistä datumia.
-// Päivitä päivämäärät vastaamaan oikeita festarin päiviä ennen julkaisua.
+// Oikeat Defqon.1 2024 päivät
 export const ALLOWED_DATE_DAYS = new Set([
-  "2026-03-30_Thursday",
-  "2026-03-30_Friday",
-  "2026-03-30_Saturday",
-  "2026-03-30_Sunday",
+  "2024-06-27_Thursday",
+  "2024-06-28_Friday",
+  "2024-06-29_Saturday",
+  "2024-06-30_Sunday",
 ]);

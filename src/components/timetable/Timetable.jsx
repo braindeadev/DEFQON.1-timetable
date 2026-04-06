@@ -15,20 +15,18 @@ import { ClearDialog } from "./ClearDialog";
 import { BEIGE, CRIMSON, FONT } from "../../styles/palette";
 import bgImage from "../../assets/images/20240630_225308_dq1_24_album_chronologisch.jpg";
 
-const LEFT_LABEL_WIDTH  = 150;
-const TIME_LABEL_HEIGHT = 60;
-const STAGE_ROW_HEIGHT  = 90;
-
 const makeEventId = (day, stage, event, start) => `${day}-${stage}-${event}-${start}`;
 
 export default function Timetable() {
   const isMobile = useMediaQuery("(max-width:600px)");
   const isTablet = useMediaQuery("(max-width:960px)");
+  const isLandscape = useMediaQuery("(max-height:500px) and (orientation: landscape)");
 
-  const leftLabelWidth  = isMobile ? 72  : isTablet ? 100 : LEFT_LABEL_WIDTH;
-  const timeLabelHeight = isMobile ? 40  : isTablet ? 50  : TIME_LABEL_HEIGHT;
-  const stageRowHeight  = isMobile ? 60  : isTablet ? 75  : STAGE_ROW_HEIGHT;
-  const timeColWidth    = isMobile ? 22  : isTablet ? 28  : TIME_COLUMN_WIDTH_PX;
+  // Skaalautuvat koot
+  const leftLabelWidth  = isLandscape ? 80 : (isMobile ? 70 : (isTablet ? 100 : 120));
+  const timeLabelHeight = isLandscape ? 30 : (isMobile ? 40 : (isTablet ? 50 : 45));
+  const stageRowHeight  = isLandscape ? 45 : (isMobile ? 55 : (isTablet ? 70 : 65));
+  const timeColWidth    = isLandscape ? 20 : (isMobile ? 22 : (isTablet ? 26 : TIME_COLUMN_WIDTH_PX));
 
   const [selectedDay, setSelectedDay] = useState(() => {
     const s = localStorage.getItem("selectedDay");
@@ -60,10 +58,10 @@ export default function Timetable() {
         minHeight: "100vh",
         display: "flex",
         flexDirection: "column",
-        backgroundImage: `linear-gradient(rgba(0,0,0,0.72), rgba(0,0,0,0.72)), url(${bgImage})`,
+        backgroundImage: `linear-gradient(rgba(0,0,0,0.78), rgba(0,0,0,0.78)), url(${bgImage})`,
         backgroundSize: "cover",
         backgroundPosition: "center top",
-        backgroundAttachment: "scroll",
+        backgroundAttachment: "fixed", // Parempi tuki skrollaukselle
       }}>
 
         <DaySelector
@@ -76,32 +74,33 @@ export default function Timetable() {
           isMobile={isMobile}
         />
 
-        {/* Grid: sticky vasen sarake + scrollattava oikea osa */}
-        <Box sx={{ display: "grid", gridTemplateColumns: `${leftLabelWidth}px 1fr` }}>
+        <Box sx={{ display: "grid", gridTemplateColumns: `${leftLabelWidth}px 1fr`, flex: 1 }}>
           <StageColumn
             stages={stages}
             selectedDay={selectedDay}
             stageRowHeight={stageRowHeight}
             timeLabelHeight={timeLabelHeight}
             isMobile={isMobile}
+            isLandscape={isLandscape}
           />
 
           <Box
             ref={scrollRef}
             sx={{
               flex: 1, overflowX: "auto", overflowY: "hidden",
-              "&::-webkit-scrollbar": { height: 6 },
-              "&::-webkit-scrollbar-track": { background: "rgba(0,0,0,0.3)" },
-              "&::-webkit-scrollbar-thumb": { background: `${CRIMSON}88`, borderRadius: 3 },
+              "&::-webkit-scrollbar": { height: 8 },
+              "&::-webkit-scrollbar-track": { background: "rgba(0,0,0,0.3)", borderRadius: 4 },
+              "&::-webkit-scrollbar-thumb": { background: `${CRIMSON}88`, borderRadius: 4, "&:hover": { background: CRIMSON } },
               cursor: "grab",
+              scrollBehavior: "smooth" // Pehmeämpi skrollaus napautuksissa
             }}
           >
             <Box sx={{ width: totalWidth, position: "relative" }}>
-              <TimeRow timeLabels={timeLabels} timeColWidth={timeColWidth} timeLabelHeight={timeLabelHeight} isMobile={isMobile} position="top" />
+              <TimeRow timeLabels={timeLabels} timeColWidth={timeColWidth} timeLabelHeight={timeLabelHeight} isMobile={isMobile} isLandscape={isLandscape} position="top" />
 
               {stages.map((stage, i) => (
                 <StageRow
-                  key={i}
+                  key={stage.name} // Korjattu: reactin 'key' käyttää nyt nimeä indeksin sijaan!
                   stage={stage}
                   index={i}
                   timeLabels={timeLabels}
@@ -113,6 +112,7 @@ export default function Timetable() {
                   showOnlyFav={showOnlyFav}
                   onToggleFav={toggleFav}
                   isMobile={isMobile}
+                  isLandscape={isLandscape} // Välitetään lapsille
                   makeEventId={makeEventId}
                   wasDragged={wasDragged}
                 />
@@ -127,11 +127,10 @@ export default function Timetable() {
           </Box>
         </Box>
 
-        <Box sx={{ flex: 1, minHeight: 80 }} />
+        <Box sx={{ minHeight: 40 }} />
 
-        {/* Footer */}
-        <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", py: 3, px: 3, borderTop: `2px solid ${CRIMSON}45`, background: "rgba(2,0,0,0.95)" }}>
-          <Typography sx={{ color: `${BEIGE}cc`, fontFamily: FONT, textAlign: "center" }}>
+        <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", py: 2, px: 3, borderTop: `2px solid ${CRIMSON}45`, background: "rgba(2,0,0,0.95)" }}>
+          <Typography sx={{ color: `${BEIGE}cc`, fontFamily: FONT, textAlign: "center", fontSize: "0.85rem" }}>
             This is a personal fan project and is not affiliated with or endorsed by Q-dance or ID&T!
           </Typography>
         </Box>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { Box } from "@mui/material";
 import { EventCard } from "../ui/EventCard";
 import { getStageColor } from "../../styles/palette";
@@ -6,10 +6,11 @@ import { getStageColor } from "../../styles/palette";
 const M_TOP = 0.5;
 const M_BOT = 0.5;
 
-export const StageRow = ({
+// memo() estää turhat uudelleenrenderöinnit skrollatessa tai kun toisen rivin suosikkeja painetaan!
+export const StageRow = memo(({
   stage, index, timeLabels, timeColWidth, stageRowHeight,
   dayStart, selectedDay, favorites, showOnlyFav, onToggleFav,
-  isMobile, makeEventId, wasDragged,
+  isMobile, isLandscape, makeEventId, wasDragged,
 }) => {
   const stageTotalHeight = stageRowHeight + (M_TOP + M_BOT) * 8;
 
@@ -23,14 +24,15 @@ export const StageRow = ({
         pb: `${M_BOT * 8}px`,
         background: index % 2 === 0 ? "rgba(4,0,0,0.62)" : "rgba(10,2,2,0.62)",
         position: "relative",
+        willChange: "transform" // Renderöinti-optimaatio laitteiston kiihdytykselle
       }}
     >
-      {stage.events.map((event, j) => {
+      {stage.events.map((event) => {
         const eid   = makeEventId(selectedDay, stage.name, event.name, event.start);
         const isFav = favorites.includes(eid);
         return (
           <EventCard
-            key={j}
+            key={eid} // Tärkeä korjaus: Unikkin avain indeksin 'j' sijaan
             event={event}
             dayStart={dayStart}
             stageColor={getStageColor(stage.name)}
@@ -38,10 +40,11 @@ export const StageRow = ({
             showOnlyFav={showOnlyFav}
             onToggle={() => onToggleFav(eid)}
             isMobile={isMobile}
+            isLandscape={isLandscape}
             wasDragged={wasDragged}
           />
         );
       })}
     </Box>
   );
-};
+});

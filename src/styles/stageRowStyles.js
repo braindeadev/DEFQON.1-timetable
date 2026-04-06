@@ -60,28 +60,20 @@ export const eventCardSx = (color, gray) => ({
 
 // ── Tapahtuman nimi-teksti ─────────────────────────────────────
 export const eventNameSx = {
-  fontWeight: 700,
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  gap: 1,
   fontFamily: FONT,
-  fontSize: "1.2rem",
-  letterSpacing: "0.07em",
-  textShadow: "0 1px 4px rgba(0,0,0,0.50)",
-  lineHeight: 1.15,
+  fontWeight: 400,
+  fontSize: "0.90rem", // Pienennetty oletuksesta
+  lineHeight: 1.1,
+  mb: 0.2,
+  color: WHITE,
+  textTransform: "uppercase",
+  letterSpacing: "0.5px",
 };
 
-// ── Tapahtuman aika-teksti ─────────────────────────────────────
 export const eventTimeSx = {
-  fontWeight: 500,
-  fontSize: "0.85rem",
-  mt: 0.4,
-  textAlign: "center",
   fontFamily: FONT,
-  opacity: 1,
-  textShadow: "0 1px 3px rgba(0,0,0,0.50)",
-  letterSpacing: "0.05em",
+  fontSize: "0.7rem", // Pienennetty oletuksesta
+  color: WHITE,
 };
 
 // ── Suosikki-ikonit ───────────────────────────────────────────

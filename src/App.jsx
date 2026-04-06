@@ -11,6 +11,7 @@ const darkTheme = createTheme({
   },
   typography: {
     fontFamily: "'Bebas Neue', 'Anton', sans-serif",
+    fontSize: 12, // Pienempi oletuskoko
   },
 });
 
