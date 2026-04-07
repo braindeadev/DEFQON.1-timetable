@@ -4,8 +4,8 @@ export const DEFAULT_DAY = "Thursday";
 
 // Oikeat Defqon.1 2024 päivät
 export const ALLOWED_DATE_DAYS = new Set([
-  "2024-06-27_Thursday",
-  "2024-06-28_Friday",
-  "2024-06-29_Saturday",
-  "2024-06-30_Sunday",
+  "2026-04-07_Thursday",
+  "2026-04-07_Friday",
+  "2026-04-07_Saturday",
+  "2026-04-07_Sunday",
 ]);

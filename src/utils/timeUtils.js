@@ -2,9 +2,10 @@ import { TIME_STEP_MINUTES } from "./config";
 
 export const generateTimeLabels = (startTime) => {
   const labels = [];
-  const [startHour] = startTime.split(":").map(Number);
+  const [startHour, startMin] = startTime.split(":").map(Number);
   for (let h = startHour; h < 24; h++) {
     for (let m = 0; m < 60; m += TIME_STEP_MINUTES) {
+      if (h === startHour && m < startMin) continue; // skip minutes before actual start
       labels.push(`${h.toString().padStart(2, "0")}:${m.toString().padStart(2, "0")}`);
     }
   }

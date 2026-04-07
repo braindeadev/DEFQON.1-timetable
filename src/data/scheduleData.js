@@ -149,8 +149,8 @@ const scheduleData = {
           { name: "Titan", start: "20:00", end: "20:45" },
           { name: "Dj Thera Pres. 25 years of Heartstyle", start: "20:45", end: "21:30" },
           { name: "Spoontech Classics", start: "21:30", end: "22:00" },
-          { name: "CEM", start: "23:30", end: "0:15" },
-          { name: "Bass-D", start: "0:15", end: "1:00" }
+          { name: "CEM", start: "23:30", end: "00:15" },
+          { name: "Bass-D", start: "00:15", end: "01:00" }
 
         ],
       },
@@ -342,9 +342,9 @@ const scheduleData = {
           { name: "Tatanka", start: "19:45", end: "20:45" },
           { name: "Luna", start: "20:45", end: "21:30" },
           { name: "Donkey Rollers", start: "21:30", end: "22:00" },
-          { name: "Bassbrain", start: "23:00", end: "0:00" },
-          { name: "Altijd Larstig & Rob GasD'rOp", start: "0:00", end: "0:30" },
-          { name: "Bier Fence", start: "0:30", end: "1:00" }
+          { name: "Bassbrain", start: "23:00", end: "00:00" },
+          { name: "Altijd Larstig & Rob GasD'rOp", start: "00:00", end: "00:30" },
+          { name: "Bier Fence", start: "00:30", end: "01:00" }
         ]
       },
       {

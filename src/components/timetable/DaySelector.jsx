@@ -7,13 +7,13 @@ import { controlBarSx, selectSx, menuItemSx, clearBtnSx } from "../../styles/sta
 import { BEIGE, CRIMSON, FONT, MENU_BG } from "../../styles/palette";
 import sacredOathLogo from "../../assets/images/1773305430605_image.png";
 
-export const DaySelector = ({ days, selectedDay, onDayChange, showOnlyFav, onToggleFav, onClearClick, isMobile }) => (
+export const DaySelector = ({ days, selectedDay, onDayChange, showOnlyFav, onToggleFav, onClearClick, isMobile, isLandscape }) => (
   <Box sx={{ ...controlBarSx, flexWrap: "wrap", gap: isMobile ? 1 : 2, p: isMobile ? 1 : 2 }}>
     <Box sx={{ flexShrink: 0, mr: 1 }}>
       <img
         src={sacredOathLogo}
         alt="Sacred Oath"
-        style={{ height: isMobile ? 55 : 100, objectFit: "contain", display: "block" }}
+        style={{ height: isLandscape ? 35 : (isMobile ? 55 : 100), objectFit: "contain", display: "block" }}
       />
     </Box>
 

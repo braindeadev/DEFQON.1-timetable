@@ -61,7 +61,7 @@ export default function Timetable() {
         backgroundImage: `linear-gradient(rgba(0,0,0,0.78), rgba(0,0,0,0.78)), url(${bgImage})`,
         backgroundSize: "cover",
         backgroundPosition: "center top",
-        backgroundAttachment: "fixed", // Parempi tuki skrollaukselle
+        backgroundAttachment: isMobile ? "scroll" : "fixed",
       }}>
 
         <DaySelector
@@ -72,6 +72,7 @@ export default function Timetable() {
           onToggleFav={setShowOnlyFav}
           onClearClick={() => setConfirmOpen(true)}
           isMobile={isMobile}
+          isLandscape={isLandscape}
         />
 
         <Box sx={{ display: "grid", gridTemplateColumns: `${leftLabelWidth}px 1fr`, flex: 1 }}>
@@ -92,7 +93,6 @@ export default function Timetable() {
               "&::-webkit-scrollbar-track": { background: "rgba(0,0,0,0.3)", borderRadius: 4 },
               "&::-webkit-scrollbar-thumb": { background: `${CRIMSON}88`, borderRadius: 4, "&:hover": { background: CRIMSON } },
               cursor: "grab",
-              scrollBehavior: "smooth" // Pehmeämpi skrollaus napautuksissa
             }}
           >
             <Box sx={{ width: totalWidth, position: "relative" }}>
@@ -118,7 +118,7 @@ export default function Timetable() {
                 />
               ))}
 
-              <TimeRow timeLabels={timeLabels} timeColWidth={timeColWidth} timeLabelHeight={timeLabelHeight} isMobile={isMobile} position="bottom" />
+              <TimeRow timeLabels={timeLabels} timeColWidth={timeColWidth} timeLabelHeight={timeLabelHeight} isMobile={isMobile} isLandscape={isLandscape} position="bottom" />
 
               {showCurrentLine && (
                 <NowLine currentTimeIndex={currentTimeIndex} timeColWidth={timeColWidth} verticalLinesH={verticalLinesH} />

@@ -1,6 +1,6 @@
 // src/components/ui/EventCard.jsx
 
-import React, { memo } from "react";
+import React, { memo, useId } from "react";
 import { Paper, Typography } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
@@ -8,12 +8,15 @@ import { timeToIndex } from "../../utils/timeUtils";
 import { eventCardSx, eventNameSx, eventTimeSx, favIconSx, favBorderIconSx } from "../../styles/stageRowStyles";
 import { WHITE } from "../../styles/palette";
 
-const ChevronBg = memo(() => (
-  // ... (sama SVG kuin aiemmin)
-  <svg style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none" }} xmlns="http://www.w3.org/2000/svg">
-    <defs><pattern id="chev" x="0" y="0" width="60" height="36" patternUnits="userSpaceOnUse"><polygon points="0,18 30,0 60,18 60,36 30,18 0,36" fill="black" opacity="0.04"/></pattern></defs><rect width="100%" height="100%" fill="url(#chev)"/>
-  </svg>
-));
+const ChevronBg = memo(() => {
+  const id = useId();
+  const patternId = `chev-${id}`;
+  return (
+    <svg style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none" }} xmlns="http://www.w3.org/2000/svg">
+      <defs><pattern id={patternId} x="0" y="0" width="60" height="36" patternUnits="userSpaceOnUse"><polygon points="0,18 30,0 60,18 60,36 30,18 0,36" fill="black" opacity="0.04"/></pattern></defs><rect width="100%" height="100%" fill={`url(#${patternId})`}/>
+    </svg>
+  );
+});
 
 export const EventCard = memo(({ event, dayStart, stageColor, isFavorite, showOnlyFav, onToggle, isMobile, isLandscape, wasDragged }) => {
   const colStart = timeToIndex(event.start, dayStart);
