@@ -18,7 +18,7 @@ const ChevronBg = memo(() => {
   );
 });
 
-export const EventCard = memo(({ event, dayStart, stageColor, isFavorite, showOnlyFav, onToggle, isMobile, isLandscape, wasDragged }) => {
+export const EventCard = memo(({ id, event, dayStart, stageColor, isFavorite, showOnlyFav, onToggle, isMobile, isLandscape, wasDragged }) => {
   const colStart = timeToIndex(event.start, dayStart);
   const colEnd   = timeToIndex(event.end,   dayStart);
   const gray     = showOnlyFav && !isFavorite;
@@ -30,6 +30,7 @@ export const EventCard = memo(({ event, dayStart, stageColor, isFavorite, showOn
 
   return (
     <Paper
+      id={id}
       elevation={0}
       onClick={handleClick}
       sx={{
@@ -46,7 +47,6 @@ export const EventCard = memo(({ event, dayStart, stageColor, isFavorite, showOn
       {/* 1. ARTISTIN NIMI - KASVATETTU KOKO */}
       <Typography noWrap sx={{ 
         ...eventNameSx, 
-        // Tässä kasvatettiin arvoja: 0.8rem -> 0.95rem -> 1.1rem
         fontSize: isLandscape ? "0.8rem" : (isMobile ? "0.95rem" : "1.05rem"),
         lineHeight: 1.1
       }}>
@@ -56,7 +56,6 @@ export const EventCard = memo(({ event, dayStart, stageColor, isFavorite, showOn
       {/* 2. KELLONAIKA - KASVATETTU KOKO */}
       <Typography sx={{ 
         ...eventTimeSx, 
-        // Tässä kasvatettiin arvoja: 0.65rem -> 0.8rem -> 0.9rem
         fontSize: isLandscape ? "0.65rem" : (isMobile ? "0.8rem" : "0.9rem") 
       }}>
         {event.start} – {event.end}

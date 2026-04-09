@@ -1,5 +1,6 @@
-import React, { useState, useCallback } from "react";
-import { Box, Typography, useMediaQuery } from "@mui/material";
+import React, { useState, useCallback, useEffect } from "react";
+import { Box, Typography, useMediaQuery, IconButton } from "@mui/material"; // Lisätty IconButton
+import SettingsIcon from "@mui/icons-material/Settings"; // UUSI IKONI
 import scheduleData from "../../data/scheduleData";
 import { DEFAULT_DAY, TIME_COLUMN_WIDTH_PX } from "../../utils/config";
 import { generateTimeLabels } from "../../utils/timeUtils";
@@ -12,6 +13,8 @@ import { StageRow } from "./StageRow";
 import { TimeRow } from "./TimeRow";
 import { NowLine } from "./NowLine";
 import { ClearDialog } from "./ClearDialog";
+import { SearchBar } from "./SearchBar"; 
+import { SettingsDialog } from "./SettingsDialog"; // UUSI KOMPONENTTI
 import { BEIGE, CRIMSON, FONT } from "../../styles/palette";
 import bgImage from "../../assets/images/20240630_225308_dq1_24_album_chronologisch.jpg";
 
@@ -22,7 +25,6 @@ export default function Timetable() {
   const isTablet = useMediaQuery("(max-width:960px)");
   const isLandscape = useMediaQuery("(max-height:500px) and (orientation: landscape)");
 
-  // Skaalautuvat koot
   const leftLabelWidth  = isLandscape ? 80 : (isMobile ? 70 : (isTablet ? 100 : 120));
   const timeLabelHeight = isLandscape ? 30 : (isMobile ? 40 : (isTablet ? 50 : 45));
   const stageRowHeight  = isLandscape ? 45 : (isMobile ? 55 : (isTablet ? 70 : 65));
@@ -32,6 +34,7 @@ export default function Timetable() {
     const s = localStorage.getItem("selectedDay");
     return s && scheduleData[s] ? s : DEFAULT_DAY;
   });
+
   const handleDayChange = useCallback((day) => {
     localStorage.setItem("selectedDay", day);
     setSelectedDay(day);
@@ -48,6 +51,36 @@ export default function Timetable() {
 
   const [showOnlyFav, setShowOnlyFav] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
+  
+  // UUSI: Asetusikkunan tila
+  const [settingsOpen, setSettingsOpen] = useState(false);
+
+  const [searchedEventId, setSearchedEventId] = useState(null);
+
+  const handleSearchSelect = useCallback((eventInfo) => {
+    const eid = makeEventId(eventInfo.day, eventInfo.stage, eventInfo.label, eventInfo.start);
+    setSearchedEventId(eid);
+
+    if (eventInfo.day !== selectedDay) {
+      handleDayChange(eventInfo.day);
+    }
+  }, [selectedDay, handleDayChange]);
+
+  useEffect(() => {
+    if (searchedEventId) {
+      const timeout = setTimeout(() => {
+        const element = document.getElementById(searchedEventId);
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth", block: "center", inline: "center" });
+          element.classList.add("highlight-flash");
+          setTimeout(() => element.classList.remove("highlight-flash"), 2500);
+        }
+        setSearchedEventId(null); 
+      }, 150);
+
+      return () => clearTimeout(timeout);
+    }
+  }, [searchedEventId, selectedDay]);
 
   return (
     <>
@@ -70,10 +103,35 @@ export default function Timetable() {
           onDayChange={handleDayChange}
           showOnlyFav={showOnlyFav}
           onToggleFav={setShowOnlyFav}
-          onClearClick={() => setConfirmOpen(true)}
+          // Poistin onClearClickin täältä, koska toiminto siirrettiin asetuksiin
           isMobile={isMobile}
           isLandscape={isLandscape}
         />
+
+        {/* PÄIVITETTY: Haku vasemmalla, Asetukset-nappi oikealla */}
+        <Box sx={{ 
+          display: 'flex', 
+          justifyContent: 'space-between', // Jakaa tilan reunoille
+          alignItems: 'center',
+          py: 2, 
+          px: isMobile ? 2 : 3, 
+          position: 'relative', 
+          zIndex: 10 
+        }}>
+          <SearchBar onSelectEvent={handleSearchSelect} />
+          
+          <IconButton 
+            onClick={() => setSettingsOpen(true)} 
+            sx={{ 
+              color: BEIGE, 
+              backgroundColor: 'rgba(0,0,0,0.4)',
+              border: `1px solid rgba(192, 25, 42, 0.3)`,
+              '&:hover': { backgroundColor: 'rgba(192, 25, 42, 0.2)', borderColor: '#C0192A' }
+            }}
+          >
+            <SettingsIcon />
+          </IconButton>
+        </Box>
 
         <Box sx={{ display: "grid", gridTemplateColumns: `${leftLabelWidth}px 1fr`, flex: 1 }}>
           <StageColumn
@@ -100,7 +158,7 @@ export default function Timetable() {
 
               {stages.map((stage, i) => (
                 <StageRow
-                  key={stage.name} // Korjattu: reactin 'key' käyttää nyt nimeä indeksin sijaan!
+                  key={stage.name}
                   stage={stage}
                   index={i}
                   timeLabels={timeLabels}
@@ -112,7 +170,7 @@ export default function Timetable() {
                   showOnlyFav={showOnlyFav}
                   onToggleFav={toggleFav}
                   isMobile={isMobile}
-                  isLandscape={isLandscape} // Välitetään lapsille
+                  isLandscape={isLandscape}
                   makeEventId={makeEventId}
                   wasDragged={wasDragged}
                 />
@@ -135,6 +193,13 @@ export default function Timetable() {
           </Typography>
         </Box>
       </Box>
+
+      {/* UUSI ASETUSIKKUNA */}
+      <SettingsDialog 
+        open={settingsOpen} 
+        onClose={() => setSettingsOpen(false)} 
+        onClearClick={() => setConfirmOpen(true)} 
+      />
 
       <ClearDialog
         open={confirmOpen}

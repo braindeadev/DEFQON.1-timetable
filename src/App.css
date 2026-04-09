@@ -1,2 +1,16 @@
-/* App.css — festival timetable specific overrides */
-/* MUI CssBaseline handles resets; Vite boilerplate removed */
+.highlight-flash {
+  animation: flashHighlight 2.5s ease-out;
+  z-index: 10 !important; 
+}
+
+@keyframes flashHighlight {
+  0% { box-shadow: 0 0 0px transparent; }
+  15% {
+    box-shadow: 0 0 30px #C0192A, inset 0 0 15px #C0192A;
+    background-color: rgba(192, 25, 42, 0.3);
+  }
+  100% {
+    box-shadow: 0 0 0px transparent;
+    background-color: transparent;
+  }
+}
