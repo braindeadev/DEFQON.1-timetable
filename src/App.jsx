@@ -18,10 +18,6 @@ const darkTheme = createTheme({
 function App() {
   return (
     <>
-      <link
-        href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Anton&family=Orbitron:wght@400;700;900&display=swap"
-        rel="stylesheet"
-      />
       <ThemeProvider theme={darkTheme}>
         <CssBaseline />
         <Timetable />

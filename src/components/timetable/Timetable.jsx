@@ -273,6 +273,7 @@ export default function Timetable() {
               ))}
 
               <TimeRow timeLabels={timeLabels} timeColWidth={timeColWidth} timeLabelHeight={timeLabelHeight} isMobile={isMobile} isLandscape={isLandscape} position="bottom" />
+              <TimeRow timeLabels={timeLabels} timeColWidth={timeColWidth} timeLabelHeight={timeLabelHeight} isMobile={isMobile} isLandscape={isLandscape} position="bottom" />
 
               {showCurrentLine && (
                 <NowLine 
