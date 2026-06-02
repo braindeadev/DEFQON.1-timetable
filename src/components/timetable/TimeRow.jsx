@@ -1,8 +1,8 @@
-import React, { useCallback } from "react";
+import React, { memo, useCallback } from "react";
 import { Box, Typography } from "@mui/material";
 import { BEIGE, CRIMSON, FONT } from "../../styles/palette";
 
-export const TimeRow = ({ timeLabels, timeColWidth, timeLabelHeight, isMobile, isLandscape, position }) => {
+export const TimeRow = memo(({ timeLabels, timeColWidth, timeLabelHeight, isMobile, isLandscape, position }) => {
   const sticky = position ?? "top";
   
   const renderCells = useCallback(() =>
@@ -69,4 +69,4 @@ export const TimeRow = ({ timeLabels, timeColWidth, timeLabelHeight, isMobile, i
       {renderCells()}
     </Box>
   );
-};
+});
