@@ -15,7 +15,7 @@ export const generateTimeLabels = (startTime) => {
   // 30h - 11h = 19 tuntia. 19 * 12 = 228 askelta.
   
   const startTotalMinutes = startH * 60 + startM;
-  const endTotalMinutes = 32 * 60; // Seuraavan päivän klo 08:00 (24 + 8)
+  const endTotalMinutes = 27 * 60 + 15; // Seuraavan päivän klo 03:15
   
   for (let m = startTotalMinutes; m <= endTotalMinutes; m += TIME_STEP_MINUTES) {
     const currentH = Math.floor(m / 60) % 24;

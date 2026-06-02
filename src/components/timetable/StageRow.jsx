@@ -17,7 +17,7 @@ export const StageRow = memo(({
     <Box
       sx={{
         display: "grid",
-        gridTemplateColumns: `repeat(${Math.max(timeLabels.length, 500)}, ${timeColWidth}px)`,
+        gridTemplateColumns: `repeat(${timeLabels.length}, ${timeColWidth}px)`,
         width: "max-content",
         height: stageTotalHeight,
         pt: `${M_TOP * 8}px`,

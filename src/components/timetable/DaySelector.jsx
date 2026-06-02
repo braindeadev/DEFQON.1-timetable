@@ -108,7 +108,7 @@ export const DaySelector = memo(({
             ),
           }}
           sx={{
-            minWidth: isMobile ? "100%" : 250,
+            width: "100%",
             background: `${BLACK}88`,
             borderRadius: "4px",
             "& .MuiOutlinedInput-root": {
@@ -129,6 +129,8 @@ export const DaySelector = memo(({
         </Box>
       )}
       sx={{
+        width: (isMobile && !isLandscape) ? "100%" : (isMobile ? 180 : 250),
+        order: (isMobile && !isLandscape) ? 2 : 0,
         "& .MuiAutocomplete-option": {
           fontFamily: FONT,
           fontSize: "1rem",
@@ -138,7 +140,7 @@ export const DaySelector = memo(({
       }}
     />
 
-    <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+    <Box sx={{ display: "flex", alignItems: "center", gap: 2, order: (isMobile && !isLandscape) ? 3 : 0 }}>
       <FormControlLabel
         control={
           <Switch

@@ -39,38 +39,15 @@ export function useDragScroll() {
     window.addEventListener("mouseup", onMouseUp);
     el.style.cursor = "grab";
 
-    const onTouchStart = (e) => {
-      if (e.touches.length !== 1) return;
-      const t = e.touches[0];
-      dragState.current = { active: true, startX: t.pageX, scrollLeft: el.scrollLeft, moved: false };
-      wasDragged.current = false;
-    };
-    const onTouchMove = (e) => {
-      if (e.touches.length !== 1) { dragState.current.active = false; return; }
-      if (!dragState.current.active) return;
-      const dx = e.touches[0].pageX - dragState.current.startX;
-      if (Math.abs(dx) > DRAG_THRESHOLD_PX) {
-        dragState.current.moved = true;
-        wasDragged.current = true;
-        el.scrollLeft = dragState.current.scrollLeft - dx;
-      }
-    };
-    const onTouchEnd = () => {
-      dragState.current.active = false;
-      setTimeout(() => { wasDragged.current = false; }, 0);
-    };
-
-    el.addEventListener("touchstart",  onTouchStart, { passive: true });
-    el.addEventListener("touchmove",   onTouchMove,  { passive: true });
-    el.addEventListener("touchend",    onTouchEnd);
+    // MOBIILI-OPTIMOINTI: Poistetaan manuaalinen touch-käsittely,
+    // jotta selain voi käyttää omaa natiivia (ja sulavampaa) vieritystään.
+    // Pidetään kuitenkin wasDragged-logiikka jos sitä tarvitaan klikkausten estoon,
+    // mutta yleensä mobiilissa natiivi 'click' -viive hoitaa tämän.
 
     return () => {
       el.removeEventListener("mousedown",  onMouseDown);
       window.removeEventListener("mousemove", onMouseMove);
       window.removeEventListener("mouseup",   onMouseUp);
-      el.removeEventListener("touchstart", onTouchStart);
-      el.removeEventListener("touchmove",  onTouchMove);
-      el.removeEventListener("touchend",   onTouchEnd);
     };
   }, []);
 

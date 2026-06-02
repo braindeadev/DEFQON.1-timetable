@@ -226,6 +226,8 @@ export default function Timetable() {
           display: "grid", 
           gridTemplateColumns: `${leftLabelWidth}px 1fr`, 
           flex: 1,
+          alignItems: "start", // Estää sisältöä venymästä turhaan, jolloin scrollbar nousee ylös
+          minHeight: 0,
           ...zoomStyle
         }}>
           <StageColumn
@@ -240,12 +242,20 @@ export default function Timetable() {
           <Box
             ref={scrollRef}
             sx={{
-              flex: 1, overflowX: "auto", overflowY: "auto", 
+              width: "100%",
+              maxHeight: "100%", 
+              overflowX: "auto", 
+              overflowY: "auto", 
+              WebkitOverflowScrolling: "touch", // Sulava momentum-vieritys iOS:llä
               "&::-webkit-scrollbar": { height: 8 },
               "&::-webkit-scrollbar-track": { background: "rgba(0,0,0,0.3)", borderRadius: 4 },
               "&::-webkit-scrollbar-thumb": { background: `${CRIMSON}88`, borderRadius: 4, "&:hover": { background: CRIMSON } },
               cursor: "grab",
               minWidth: 0,
+              // Laitteistokiihdytys ja suorituskykyoptimoinnit
+              transform: "translateZ(0)",
+              willChange: "scroll-position",
+              backfaceVisibility: "hidden",
             }}
           >
             <Box sx={{ width: totalWidth, minWidth: totalWidth, position: "relative" }}>
@@ -272,7 +282,6 @@ export default function Timetable() {
                 />
               ))}
 
-              <TimeRow timeLabels={timeLabels} timeColWidth={timeColWidth} timeLabelHeight={timeLabelHeight} isMobile={isMobile} isLandscape={isLandscape} position="bottom" />
               <TimeRow timeLabels={timeLabels} timeColWidth={timeColWidth} timeLabelHeight={timeLabelHeight} isMobile={isMobile} isLandscape={isLandscape} position="bottom" />
 
               {showCurrentLine && (
