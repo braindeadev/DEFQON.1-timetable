@@ -23,7 +23,7 @@ export function useDragScroll() {
       if (Math.abs(dx) > DRAG_THRESHOLD_PX) {
         dragState.current.moved = true;
         wasDragged.current = true;
-        e.preventDefault();
+        // Päivitetään scrollLeft välittömästi liikkeen aikana
         el.scrollLeft = dragState.current.scrollLeft - dx;
       }
     };

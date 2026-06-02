@@ -19,8 +19,8 @@ export const stageNameSx = (color) => ({
   fontFamily: FONT,
   letterSpacing: "0.1em",
   textShadow: "0 1px 5px rgba(0,0,0,0.60)",
-  border: `2px solid ${CRIMSON}45`,
 });
+
 
 // --daylabel-----
 export const dayLabelSx = {
@@ -40,9 +40,9 @@ export const dayLabelSx = {
 
 // ── Tapahtuma-kortti ───────────────────────────────────────────
 export const eventCardSx = (color, gray) => ({
-  backgroundColor: gray ? "#2a2a2a" : color,
-  color: gray ? "#666" : "#fff",
-  opacity: gray ? 0.45 : 1,
+  backgroundColor: gray ? "#3a3a3a" : color,
+  color: gray ? "#999" : "#fff",
+  opacity: gray ? 0.65 : 1,
   p: "6px",
   mx: "2px",
   fontWeight: "bold",
@@ -51,10 +51,10 @@ export const eventCardSx = (color, gray) => ({
   justifyContent: "center",
   alignItems: "center",
   borderRadius: "3px",
-  border: gray ? `2px solid #444` : `2px solid ${color}99`,
+  border: gray ? `2px solid #555` : `2px solid ${color}99`,
   cursor: "pointer",
   transition: "all 0.2s ease",
-  filter: gray ? "grayscale(100%) brightness(0.4)" : "none",
+  filter: gray ? "grayscale(80%) brightness(0.7)" : "none",
   zIndex: 10,
 });
 
@@ -195,6 +195,26 @@ export const dialogConfirmBtnSx = {
     borderColor: CRIMSON,
   },
 };
+
+export const dialogActionBtnSx = (isDanger) => ({
+  background: isDanger ? `${CRIMSON}dd` : `${BEIGE}22`,
+  color: isDanger ? WHITE : BEIGE,
+  fontFamily: FONT,
+  letterSpacing: "0.1em",
+  fontSize: "1.1rem",
+  fontWeight: "bold",
+  py: 1.5,
+  borderRadius: "8px",
+  boxShadow: isDanger ? `0 0 15px ${CRIMSON}44` : "none",
+  "&:hover": {
+    background: isDanger ? CRIMSON : `${BEIGE}44`,
+    boxShadow: isDanger ? `0 0 25px ${CRIMSON}66` : "none",
+  },
+  "&.Mui-disabled": {
+    background: "#333",
+    color: "#666"
+  }
+});
 
 // ── NOW-viiva ─────────────────────────────────────────────────
 // Positioitu grid-wrapperin sisälle: top=0 = ylätimelabelin yläreuna,

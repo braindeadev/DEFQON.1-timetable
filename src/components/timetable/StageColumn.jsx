@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { Box, Typography } from "@mui/material";
 import { stageNameSx } from "../../styles/stageRowStyles";
 import { BEIGE, CRIMSON, FONT, getStageColor } from "../../styles/palette";
@@ -6,42 +6,45 @@ import { BEIGE, CRIMSON, FONT, getStageColor } from "../../styles/palette";
 const M_TOP = 0.5;
 const M_BOT = 0.5;
 
-const TRIANGLE_H = 14;
-const TRIANGLE_W = 23;
-
 // Uudistettu, automaattisesti tilaan skaalautuva kolmiorivi!
-const TriangleRow = ({ color, pointing }) => {
+const TriangleRow = memo(({ color, pointing, h }) => {
   return (
     <Box sx={{
-      display: "flex",
       width: "100%",
-      overflow: "hidden", // Piilottaa yli menevät kolmiot täydellisesti reunoilta!
-      justifyContent: "center",
-      height: TRIANGLE_H,
-      gap: "1px"
+      height: h,
+      flexShrink: 0,
+      lineHeight: 0,
+      display: "block"
     }}>
-      {/* Luodaan riittävästi kolmioita peittämään työpöytä-leveydetkin */}
-      {Array.from({ length: 10 }).map((_, i) => {
-        const points = pointing === "down"
-          ? `0,0 ${TRIANGLE_W},0 ${TRIANGLE_W / 2},${TRIANGLE_H}`
-          : `0,${TRIANGLE_H} ${TRIANGLE_W},${TRIANGLE_H} ${TRIANGLE_W / 2},0`;
-        return (
-          <svg key={i} width={TRIANGLE_W} height={TRIANGLE_H} style={{ flexShrink: 0 }}>
-            <polygon points={points} fill={color} opacity="0.85" />
-          </svg>
-        );
-      })}
+      <svg 
+        viewBox="0 0 600 100" 
+        width="100%" 
+        height="100%" 
+        preserveAspectRatio="none" 
+        style={{ display: "block" }}
+      >
+        {Array.from({ length: 6 }).map((_, i) => {
+          const x = i * 100;
+          const points = pointing === "down"
+            ? `${x},0 ${x + 100},0 ${x + 50},100`
+            : `${x},100 ${x + 100},100 ${x + 50},0`;
+          return <polygon key={i} points={points} fill={color} opacity="0.85" />;
+        })}
+      </svg>
     </Box>
   );
-};
+});
 
-export const StageColumn = ({ stages, selectedDay, stageRowHeight, timeLabelHeight, isMobile, isLandscape }) => {
+export const StageColumn = memo(({ stages, selectedDay, stageRowHeight, timeLabelHeight, isMobile, isLandscape }) => {
   const stageTotalHeight = stageRowHeight + (M_TOP + M_BOT) * 8;
+  
+  // Dynaamiset kolmion koot
+  const th = isLandscape ? 6 : (isMobile ? 8 : 10);
 
   const DayLabel = () => (
     <Typography sx={{
       fontFamily: FONT,
-      fontSize: isLandscape ? "0.85rem" : (isMobile ? "1.0rem" : "1.4rem"), // Skaalautuva DayLabel
+      fontSize: isLandscape ? "0.85rem" : (isMobile ? "1.0rem" : "1.4rem"), 
       fontWeight: "bold",
       letterSpacing: "0.1em",
       textTransform: "uppercase",
@@ -76,7 +79,7 @@ export const StageColumn = ({ stages, selectedDay, stageRowHeight, timeLabelHeig
           background: i % 2 === 0 ? "rgba(4,0,0,0.88)" : "rgba(10,2,2,0.88)",
           display: "flex", alignItems: "center", justifyContent: "center",
           flexShrink: 0,
-          px: isLandscape ? "2px" : (isMobile ? "4px" : "8px"), // Reagoi näytön tilaan
+          px: isLandscape ? "2px" : (isMobile ? "4px" : "8px"), 
         }}>
           <Box sx={{
             ...stageNameSx(getStageColor(stage.name)),
@@ -86,28 +89,32 @@ export const StageColumn = ({ stages, selectedDay, stageRowHeight, timeLabelHeig
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            justifyContent: "space-between",
-            py: "4px",
-            overflow: "hidden", // Estää tekstin ja kolmioiden karkaamisen grid-solun ulkopuolelle
+            justifyContent: "space-between", 
+            py: 0, 
+            overflow: "hidden", 
           }}>
-            <TriangleRow color={BEIGE} pointing="down" />
+            <TriangleRow color={BEIGE} pointing="down" h={th} />
 
             <Box sx={{
+              flex: 1, 
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
               fontFamily: FONT,
-              fontSize: isLandscape ? "0.60rem" : (isMobile ? "0.75rem" : "1.15rem"), // Skaalautuva Stagen nimi
+              fontSize: isLandscape ? "0.70rem" : (isMobile ? "0.75rem" : "1.15rem"), 
               fontWeight: "bold",
               letterSpacing: "0.05em",
               textShadow: "0 1px 4px rgba(0,0,0,0.60)",
               color: "#fff",
               textAlign: "center",
               lineHeight: 1.1,
-              wordBreak: "break-word", // Katkaisee esim. "MAGENTA - SILENT" useammalle riville jos ahdasta!
+              wordBreak: "break-word", 
               px: 0.5,
             }}>
               {stage.name}
             </Box>
 
-            <TriangleRow color={BEIGE} pointing="up" />
+            <TriangleRow color={BEIGE} pointing="up" h={th} />
           </Box>
         </Box>
       ))}
@@ -127,4 +134,4 @@ export const StageColumn = ({ stages, selectedDay, stageRowHeight, timeLabelHeig
       </Box>
     </Box>
   );
-};
+});

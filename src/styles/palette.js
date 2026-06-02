@@ -16,14 +16,22 @@ export const STAGE_COLORS = {
   "PURPLE":           "#46206E",
   "WHITE":            "#F9FBFD",
   "BROWN - SILENT":   "#8B4D10",
-  "STAMPKROEG":       "#B6D7A8",
+  "STAMPKROEG":       "#D04401",
 };
 
 // Palauttaa stagen värin nimen perusteella, fallback CRIMSON
-export const getStageColor = (name) =>
-  STAGE_COLORS[name] ?? "#A60132";
+export const getStageColor = (name) => {
+  if (STAGE_COLORS[name]) return STAGE_COLORS[name];
+  
+  // Etsi alkuosan perusteella (esim. "STAMPKROEG - ..." -> "STAMPKROEG")
+  for (const key in STAGE_COLORS) {
+    if (name.startsWith(key)) return STAGE_COLORS[key];
+  }
+  
+  return "#910101";
+};
 
-export const CRIMSON   = "#A60132";
+export const CRIMSON   = "#910101";
 export const WHITE     = "#ffffff";
 export const CRIMSON2  = "#6E1828";
 export const BLACK     = "#080202";

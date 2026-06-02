@@ -13,3 +13,30 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+@keyframes pulseOnce {
+  0% { transform: scale(1.03); }
+  30% { transform: scale(1.2); box-shadow: 0 0 40px #fff, 0 0 20px #fff; }
+  100% { transform: scale(1.03); }
+}
+
+@keyframes flashHighlight {
+  0% { transform: scale(1); filter: brightness(1); }
+  20% { transform: scale(1.15); filter: brightness(3); box-shadow: 0 0 50px #fff; z-index: 100; }
+  40% { transform: scale(1); filter: brightness(1); }
+  60% { transform: scale(1.15); filter: brightness(3); box-shadow: 0 0 50px #fff; z-index: 100; }
+  80% { transform: scale(1); filter: brightness(1); }
+  100% { transform: scale(1); filter: brightness(1); }
+}
+
+@keyframes pulseGlow {
+  0% { opacity: 0.5; box-shadow: 0 0 5px #910101; }
+  50% { opacity: 1; box-shadow: 0 0 15px #910101, 0 0 25px #910101; }
+  100% { opacity: 0.5; box-shadow: 0 0 5px #910101; }
+}
+
+@keyframes arrowSlide {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(3px); }
+  100% { transform: translateY(0); }
+}
