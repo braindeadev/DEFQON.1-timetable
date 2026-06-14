@@ -103,7 +103,7 @@ const scheduleData = {
         ]
       },
       {
-        "name": "BROWN - SILENT",
+        "name": "BROWN",
         "events": [
           {
             "name": "RANSOM",
@@ -128,7 +128,7 @@ const scheduleData = {
         ]
       },
       {
-        "name": "MAGENTA - SILENT",
+        "name": "MAGENTA",
         "events": [
           {
             "name": "ANDY SVGE",
@@ -158,6 +158,46 @@ const scheduleData = {
           {
             "name": "GOLDSCHOOL WITH FRIENDS",
             "start": "00:30",
+            "end": "02:00"
+          }
+        ]
+      },
+      {
+        "name": "STAMPKROEG",
+        "events": [
+          {
+            "name": "CRO & Steenwolk",
+            "start": "18:00",
+            "end": "19:30"
+          },
+          {
+            "name": "RuneScape Rave",
+            "start": "19:30",
+            "end": "21:00"
+          },
+          {
+            "name": "Peygan",
+            "start": "21:00",
+            "end": "22:00"
+          },
+          {
+            "name": "Wheel of madness: Lost Shepherds",
+            "start": "23:00",
+            "end": "23:45"
+          },
+          {
+            "name": "No feest, no glory: Alaafrobros",
+            "start": "23:45",
+            "end": "00:30"
+          },
+          {
+            "name": "Freddy Chaserz",
+            "start": "00:30",
+            "end": "01:15"
+          },
+          {
+            "name": "Wasted Melodies: Special Krew",
+            "start": "01:15",
             "end": "02:00"
           }
         ]
@@ -201,7 +241,7 @@ const scheduleData = {
             "end": "18:00"
           },
           {
-            "name": "REDRACE WINNER",
+            "name": "TESTAROSSA",
             "start": "18:00",
             "end": "18:30"
           },
@@ -591,7 +631,7 @@ const scheduleData = {
             "end": "12:00"
           },
           {
-            "name": "CRYOGENIC",
+            "name": "CRYOGENIC & SPIADY",
             "start": "12:00",
             "end": "13:00"
           },
@@ -833,7 +873,7 @@ const scheduleData = {
         ]
       },
       {
-        "name": "STAMPKROEG - LARSTIG & GASDROP",
+        "name": "STAMPKROEG",
         "events": [
           {
             "name": "ONESIE BRIGADE",
@@ -904,6 +944,36 @@ const scheduleData = {
             "name": "PURE CHAOS MET LARSTIG & GASDROP X BASS CHASERZ X DR. RUDE X HANS GLOCK",
             "start": "20:30",
             "end": "23:00"
+          },
+          {
+            "name": "UNBREAKABLE",
+            "start": "23:00",
+            "end": "00:00"
+          },
+          {
+            "name": "BACK ON SIGNAL",
+            "start": "00:00",
+            "end": "00:30"
+          },
+          {
+            "name": "JAY REETRO",
+            "start": "00:30",
+            "end": "01:15"
+          },
+          {
+            "name": "PRIMESHOCK",
+            "start": "01:15",
+            "end": "01:45"
+          },
+          {
+            "name": "SHAKE THE UNDERGROUND",
+            "start": "01:45",
+            "end": "02:30"
+          },
+          {
+            "name": "THERA",
+            "start": "02:30",
+            "end": "03:00"
           }
         ]
       }
@@ -1089,6 +1159,11 @@ const scheduleData = {
             "name": "NEOPHYTE",
             "start": "15:00",
             "end": "16:00"
+          },
+          {
+            "name": "CLOSED FOR POWER HOUR",
+            "start": "16:00",
+            "end": "17:15"
           },
           {
             "name": "SATIRIZED",
@@ -1289,6 +1364,11 @@ const scheduleData = {
             "name": "UNLOAD",
             "start": "15:00",
             "end": "16:00"
+          },
+          {
+            "name": "OBLIVION",
+            "start": "16:00",
+            "end": "16:30"
           },
           {
             "name": "SPECTRE",
@@ -1603,7 +1683,7 @@ const scheduleData = {
         ]
       },
       {
-        "name": "STAMPKROEG - DIKKE BAAP",
+        "name": "STAMPKROEG",
         "events": [
           {
             "name": "KYØN",
@@ -1684,6 +1764,36 @@ const scheduleData = {
             "name": "HET POMPSTATION",
             "start": "21:15",
             "end": "22:00"
+          },
+          {
+            "name": "Y.DID.EYE & THE FORCE",
+            "start": "23:00",
+            "end": "00:00"
+          },
+          {
+            "name": "ARABIERQANTUS",
+            "start": "00:00",
+            "end": "00:30"
+          },
+          {
+            "name": "GECK-O",
+            "start": "00:30",
+            "end": "01:15"
+          },
+          {
+            "name": "SJANS PAUL",
+            "start": "01:15",
+            "end": "01:45"
+          },
+          {
+            "name": "GHOST-LACTIXX",
+            "start": "01:45",
+            "end": "02:15"
+          },
+          {
+            "name": "RAVE KREW",
+            "start": "02:15",
+            "end": "03:00"
           }
         ]
       }
@@ -2223,7 +2333,7 @@ const scheduleData = {
         ]
       },
       {
-        "name": "STAMPKROEG - BASSBRAIN",
+        "name": "STAMPKROEG",
         "events": [
           {
             "name": "HARDSTYLE GEKKENHUIS LIVE PODCAST",
@@ -2281,4 +2391,4 @@ const scheduleData = {
   }
 };
 
-export default scheduleData;;
+export default scheduleData;

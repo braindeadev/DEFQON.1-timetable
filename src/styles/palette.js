@@ -15,6 +15,7 @@ export const STAGE_COLORS = {
   "SILVER":           "#595f64",
   "PURPLE":           "#46206E",
   "WHITE":            "#F9FBFD",
+  "BROWN":            "#8B4D10",
   "BROWN - SILENT":   "#8B4D10",
   "STAMPKROEG":       "#D04401",
 };

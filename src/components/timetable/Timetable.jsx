@@ -78,7 +78,7 @@ export default function Timetable() {
   }, [setFavorites]);
 
   // Skaalautuvat koot (suurennettu landscape-kokoja luettavuuden parantamiseksi)
-  const leftLabelWidth  = isLandscape ? 85 : (isMobile ? 75 : (isTablet ? 90 : 110));
+  const leftLabelWidth  = isLandscape ? 95 : (isMobile ? 85 : (isTablet ? 100 : 125));
   const timeLabelHeight = isLandscape ? 45 : (isMobile ? 50 : (isTablet ? 60 : 60));
   const stageRowHeight  = isLandscape ? 50 : (isMobile ? 55 : (isTablet ? 65 : 65));
   const timeColWidth    = isLandscape ? 24 : (isMobile ? 24 : (isTablet ? 26 : TIME_COLUMN_WIDTH_PX));

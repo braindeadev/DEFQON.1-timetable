@@ -102,14 +102,19 @@ export const StageColumn = memo(({ stages, selectedDay, stageRowHeight, timeLabe
               alignItems: "center",
               justifyContent: "center",
               fontFamily: FONT,
-              fontSize: isLandscape ? "0.70rem" : (isMobile ? "0.75rem" : "1.15rem"), 
+              fontSize: (() => {
+                const base = isLandscape ? 0.70 : (isMobile ? 0.75 : 1.15);
+                // Jos nimi on pitkä (kuten STAMPKROEG), pienennetään fonttia hieman
+                const scale = stage.name.length > 9 ? 0.85 : 1.0;
+                return `${base * scale}rem`;
+              })(),
               fontWeight: "bold",
               letterSpacing: "0.05em",
               textShadow: "0 1px 4px rgba(0,0,0,0.60)",
               color: "#fff",
               textAlign: "center",
               lineHeight: 1.1,
-              wordBreak: "break-word", 
+              whiteSpace: "nowrap", // Estetään rivinvaihto sanan sisällä
               px: 0.5,
             }}>
               {stage.name}
