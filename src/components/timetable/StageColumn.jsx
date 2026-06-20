@@ -80,7 +80,6 @@ export const StageColumn = memo(({ stages, selectedDay, stageRowHeight, timeLabe
           display: "flex", alignItems: "center", justifyContent: "center",
           flexShrink: 0,
           px: isLandscape ? "2px" : (isMobile ? "4px" : "8px"), 
-          px: isLandscape ? "2px" : (isMobile ? "4px" : "8px"), 
         }}>
           <Box sx={{
             ...stageNameSx(getStageColor(stage.name)),
