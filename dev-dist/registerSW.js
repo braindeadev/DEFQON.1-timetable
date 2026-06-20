@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) navigator.serviceWorker.register('/DEFQON.1-timetable/dev-sw.js?dev-sw', { scope: '/DEFQON.1-timetable/', type: 'classic' })

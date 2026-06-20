@@ -1,4 +1,5 @@
-import { WHITE, BLACK, CRIMSON, BEIGE, BEIGE_D, FONT, DARK_BG, PANEL_BG, PANEL_ALT, SELECT_BG, MENU_BG } from "./palette";
+import { WHITE, BLACK, CRIMSON, BEIGE, BEIGE_L, BEIGE_D, FONT, DARK_BG, PANEL_BG, PANEL_ALT, SELECT_BG, MENU_BG } from "./palette";
+import bgImage from "../assets/images/20240630_225308_dq1_24_album_chronologisch.jpg";
 
 // ── Vaihepalkin nimi-solu ──────────────────────────────────────
 export const stageNameSx = (color) => ({
@@ -159,23 +160,47 @@ export const clearBtnSx = {
 
 // ── Vahvistusdialogi ──────────────────────────────────────────
 export const dialogPaperSx = {
-  background: "#0d0101",
-  border: `2px solid ${CRIMSON}45`,
-  color: BEIGE,
-  fontFamily: FONT,
+  backgroundImage: `linear-gradient(rgba(5, 1, 1, 0.98), rgba(5, 1, 1, 0.98)), url(${bgImage})`,
+  backgroundSize: "cover",
+  backgroundPosition: "center",
+  border: `2px solid ${CRIMSON}cc`,
+  color: BEIGE_L,
+  boxShadow: "0 15px 50px rgba(0,0,0,0.95), 0 0 30px rgba(145, 1, 1, 0.5)",
+  borderRadius: "12px",
 };
 
 export const dialogTitleSx = {
   fontFamily: FONT,
-  letterSpacing: "0.18em",
-  fontSize: "1.6rem",
-  textShadow: "0 1px 4px rgba(0,0,0,0.5)",
+  letterSpacing: "0.15em",
+  fontSize: "2rem",
+  fontWeight: "bold",
+  color: WHITE,
+  borderBottom: `2px solid ${CRIMSON}`,
+  pb: 1.5,
+  textAlign: "center",
+  textShadow: `0 0 10px rgba(145, 1, 1, 0.8), 0 0 2px rgba(255,255,255,0.5)`,
 };
 
 export const dialogContentSx = {
+  pt: 2.5,
+};
+
+export const dialogDescSx = {
   fontFamily: FONT,
-  fontSize: "1.1rem",
-  letterSpacing: "0.06em",
+  fontSize: "1rem",
+  lineHeight: 1.3,
+  color: `${BEIGE_L}bb`, // Hieman pehmeämpi luettavuus
+  mb: 2,
+  letterSpacing: "0.05em",
+  textTransform: "uppercase",
+};
+
+export const dialogLabelSx = {
+  fontFamily: FONT,
+  fontSize: "1.15rem",
+  letterSpacing: "0.08em",
+  color: BEIGE,
+  textTransform: "uppercase",
 };
 
 export const dialogCancelBtnSx = {
@@ -197,23 +222,41 @@ export const dialogConfirmBtnSx = {
 };
 
 export const dialogActionBtnSx = (isDanger) => ({
-  background: isDanger ? `${CRIMSON}dd` : `${BEIGE}22`,
+  background: isDanger ? `linear-gradient(135deg, ${CRIMSON}dd, #500000)` : `rgba(13, 1, 1, 0.5)`,
   color: isDanger ? WHITE : BEIGE,
+  border: isDanger ? `1px solid ${CRIMSON}` : `1px solid ${CRIMSON}66`,
   fontFamily: FONT,
-  letterSpacing: "0.1em",
+  letterSpacing: "0.12em",
   fontSize: "1.1rem",
   fontWeight: "bold",
-  py: 1.5,
-  borderRadius: "8px",
+  py: 1.2,
+  borderRadius: "4px",
+  textTransform: "uppercase",
   boxShadow: isDanger ? `0 0 15px ${CRIMSON}44` : "none",
+  transition: "all 0.2s ease-in-out",
   "&:hover": {
-    background: isDanger ? CRIMSON : `${BEIGE}44`,
-    boxShadow: isDanger ? `0 0 25px ${CRIMSON}66` : "none",
+    background: isDanger ? CRIMSON : `${CRIMSON}22`,
+    borderColor: CRIMSON,
+    color: WHITE,
+    boxShadow: isDanger ? `0 0 25px ${CRIMSON}66` : `0 0 15px ${CRIMSON}44`,
   },
   "&.Mui-disabled": {
-    background: "#333",
-    color: "#666"
+    background: "rgba(0, 0, 0, 0.2)",
+    color: "rgba(188, 155, 94, 0.3)",
+    borderColor: "rgba(145, 1, 1, 0.15)",
   }
+});
+
+export const dialogSectionHeaderSx = (isDanger = false) => ({
+  fontFamily: FONT,
+  fontSize: "1.3rem",
+  letterSpacing: "0.12em",
+  mb: 2,
+  color: isDanger ? CRIMSON : BEIGE,
+  borderLeft: `4px solid ${CRIMSON}`,
+  pl: 1.5,
+  pb: 0.2,
+  textTransform: "uppercase",
 });
 
 // ── NOW-viiva ─────────────────────────────────────────────────

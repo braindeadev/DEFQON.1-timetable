@@ -1,10 +1,8 @@
 // src/components/ui/EventCard.jsx
 
 import React, { memo, useCallback, useMemo } from "react";
-import { Paper, Typography } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import { eventCardSx, eventNameSx, eventTimeSx, favIconSx, favBorderIconSx } from "../../styles/stageRowStyles";
 import { WHITE } from "../../styles/palette";
 
 const ChevronBg = memo(() => (
@@ -24,52 +22,91 @@ export const EventCard = memo(({ eventId, event, stageColor, colStart, colEnd, i
     onToggleFav(eventId);
   }, [eventId, onToggleFav, wasDragged]);
 
-  const cardSx = useMemo(() => ({
-    gridColumn: `${Math.floor(colStart) + 1} / ${Math.ceil(colEnd) + 1}`,
-    position: "relative",
-    overflow: "hidden",
-    padding: isLandscape ? "2px 4px" : "4px 8px",
-    minHeight: 0, 
-    ...eventCardSx(stageColor, gray),
-    opacity: gray ? 0.45 : 1,
-    ...(isSelected && {
-      opacity: 1,
-      zIndex: 100,
-      border: `3px solid ${WHITE}`,
-      boxShadow: `0 0 20px ${WHITE}, 0 0 10px ${stageColor}`,
-      filter: "none",
-      animation: "flashHighlight 1.2s ease-in-out forwards",
-    }),
-    transition: "all 0.3s ease",
-  }), [colStart, colEnd, isLandscape, stageColor, gray, isSelected]);
+  const cardStyle = useMemo(() => {
+    const gridColumn = `${Math.floor(colStart) + 1} / ${Math.ceil(colEnd) + 1}`;
+    const padding = isLandscape ? "2px 4px" : "4px 8px";
+    const backgroundColor = gray ? "#3a3a3a" : stageColor;
+    const color = gray ? "#999" : "#fff";
+    const opacity = gray ? 0.45 : 1;
+    const border = gray ? "2px solid #555" : `2px solid ${stageColor}99`;
+    const filter = gray ? "grayscale(80%) brightness(0.7)" : "none";
+    const zIndex = isSelected ? 100 : 10;
+    
+    const style = {
+      gridColumn,
+      position: "relative",
+      overflow: "hidden",
+      padding,
+      minHeight: 0,
+      backgroundColor,
+      color,
+      opacity,
+      border,
+      filter,
+      zIndex,
+      transition: "opacity 0.15s ease, filter 0.15s ease",
+    };
+
+    if (isSelected) {
+      style.opacity = 1;
+      style.border = "3px solid #ffffff";
+      style.boxShadow = `0 0 20px #ffffff, 0 0 10px ${stageColor}`;
+      style.filter = "none";
+      style.animation = "flashHighlight 1.2s ease-in-out forwards";
+    }
+
+    return style;
+  }, [colStart, colEnd, isLandscape, stageColor, gray, isSelected]);
 
   return (
-    <Paper
-      elevation={0}
+    <div
       onClick={handleClick}
-      sx={cardSx}
+      className="event-card"
+      style={cardStyle}
     >
       {!gray && <ChevronBg />}
       
-      <Typography noWrap sx={{ 
-        ...eventNameSx, 
-        fontSize: isLandscape ? "0.85rem" : (isMobile ? "0.95rem" : "1.05rem"),
-        lineHeight: 1.1
-      }}>
+      <div 
+        className="event-name" 
+        style={{ 
+          fontSize: isLandscape ? "0.85rem" : (isMobile ? "0.95rem" : "1.05rem")
+        }}
+      >
         {event.name}
-      </Typography>
+      </div>
       
-      <Typography sx={{ 
-        ...eventTimeSx, 
-        fontSize: isLandscape ? "0.75rem" : (isMobile ? "0.8rem" : "0.9rem") 
-      }}>
+      <div 
+        className="event-time" 
+        style={{ 
+          fontSize: isLandscape ? "0.75rem" : (isMobile ? "0.8rem" : "0.9rem") 
+        }}
+      >
         {event.start} – {event.end}
-      </Typography>
+      </div>
       
-      {isFavorite
-        ? <FavoriteIcon sx={{ ...favIconSx(WHITE), fontSize: isLandscape ? "0.9rem" : (isMobile ? "1rem" : "1.2rem"), zIndex: 10 }} />
-        : <FavoriteBorderIcon sx={{ ...favBorderIconSx, fontSize: isLandscape ? "0.9rem" : (isMobile ? "1rem" : "1.2rem"), zIndex: 10 }} />
-      }
-    </Paper>
+      {isFavorite ? (
+        <FavoriteIcon 
+          style={{ 
+            color: WHITE, 
+            position: "absolute", 
+            bottom: 4, 
+            right: 4, 
+            fontSize: isLandscape ? "0.9rem" : (isMobile ? "1rem" : "1.2rem"), 
+            zIndex: 10 
+          }} 
+        />
+      ) : (
+        <FavoriteBorderIcon 
+          style={{ 
+            color: "rgba(255, 255, 255, 0.9)", 
+            position: "absolute", 
+            bottom: 4, 
+            right: 4, 
+            fontSize: isLandscape ? "0.9rem" : (isMobile ? "1rem" : "1.2rem"), 
+            zIndex: 10 
+          }} 
+        />
+      )}
+    </div>
   );
 });

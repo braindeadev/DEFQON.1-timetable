@@ -7,6 +7,8 @@ import { useFavorites } from "../../hooks/useFavorites";
 import { useNowLine } from "../../hooks/useNowLine";
 import { useDragScroll } from "../../hooks/useDragScroll";
 import { useZoom } from "../../hooks/useZoom";
+import { useAlerts } from "../../hooks/useAlerts";
+import { decodeFavorites, getDaysFromEventIds } from "../../utils/shareUtils";
 import { DaySelector } from "./DaySelector";
 import { StageColumn } from "./StageColumn";
 import { StageRow } from "./StageRow";
@@ -28,11 +30,17 @@ export default function Timetable() {
   const { favorites, favoritesSet, toggle: toggleFav, clear: clearFavs, setFavorites } = useFavorites();
   const { scrollRef, wasDragged } = useDragScroll();
   const { zoomRef, zoomStyle } = useZoom();
-
   const [selectedDay, setSelectedDay] = useState(() => {
     const s = localStorage.getItem("selectedDay");
     return s && scheduleData[s] ? s : DEFAULT_DAY;
   });
+
+  const { 
+    alertsEnabled, 
+    alertOffset, 
+    setAlertsEnabled, 
+    setAlertOffset 
+  } = useAlerts(favorites, selectedDay);
 
   const { dayStart } = scheduleData[selectedDay] || {};
   const { currentTimeIndex, showCurrentLine } = useNowLine(selectedDay, dayStart);
@@ -63,10 +71,33 @@ export default function Timetable() {
     const favsParam = params.get("favs");
     if (favsParam) {
       try {
-        const decoded = JSON.parse(atob(favsParam));
-        if (Array.isArray(decoded) && decoded.length > 0) {
-          if (window.confirm(`Import ${decoded.length} favorites from shared link?`)) {
-            setFavorites(decoded);
+        let importedFavs = [];
+
+        // 1. Kokeillaan purkaa vanha b64 JSON-taulukko (backwards compatibility)
+        try {
+          const rawDecode = atob(favsParam.replace(/-/g, '+').replace(/_/g, '/'));
+          if (rawDecode.trim().startsWith("[")) {
+            importedFavs = JSON.parse(rawDecode);
+          }
+        } catch (e) {
+          // Ei ollut vanhaa JSON-b64-koodausta, jatketaan uudella bitmaskilla
+        }
+
+        // 2. Jos ei ollut vanhaa muotoa, käytetään uutta pakattua bitmaskia
+        if (importedFavs.length === 0) {
+          importedFavs = decodeFavorites(favsParam);
+        }
+
+        if (Array.isArray(importedFavs) && importedFavs.length > 0) {
+          const daysSet = getDaysFromEventIds(importedFavs);
+          const daysStr = Array.from(daysSet).join(", ");
+
+          if (window.confirm(`Import ${importedFavs.length} favorites (${daysStr}) from shared link?`)) {
+            // Yhdistetään olemassa oleviin suosikkeihin (merge), jotta aiemmat omat suosikit eivät pyyhkiydy pois
+            setFavorites(prev => {
+              const merged = new Set([...prev, ...importedFavs]);
+              return Array.from(merged);
+            });
           }
         }
         // Tyhjennetään URL
@@ -367,6 +398,10 @@ export default function Timetable() {
           setFavorites(newFavs);
           setSettingsOpen(false);
         }}
+        alertsEnabled={alertsEnabled}
+        onToggleAlerts={setAlertsEnabled}
+        alertOffset={alertOffset}
+        onChangeAlertOffset={setAlertOffset}
       />
     </>
   );
