@@ -49,10 +49,10 @@ export const EventCard = memo(({ eventId, event, stageColor, colStart, colEnd, i
 
     if (isSelected) {
       style.opacity = 1;
-      style.border = "3px solid #ffffff";
-      style.boxShadow = `0 0 20px #ffffff, 0 0 10px ${stageColor}`;
+      style.border = `3px solid color-mix(in srgb, ${stageColor} 80%, #ffffff)`;
+      style.boxShadow = `0 0 15px color-mix(in srgb, ${stageColor} 50%, #ffffff)`;
       style.filter = "none";
-      style.animation = "flashHighlight 1.2s ease-in-out forwards";
+      style.animation = "flashHighlight 1.0s ease-in-out forwards";
     }
 
     return style;

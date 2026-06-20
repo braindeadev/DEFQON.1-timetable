@@ -243,7 +243,7 @@ export default function Timetable() {
                 // 3. Palataan normaaliksi (poistetaan korostus ja tyhjennetään haku)
                 setTimeout(() => {
                   setSelectedArtist(null);
-                }, 2000); // Välähdys kestää hetken
+                }, 1000); // Välähdys kestää hetken
               }, 700); // Skrollauksen odotusaika
             } else {
               setSelectedArtist(null);

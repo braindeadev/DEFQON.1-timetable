@@ -93,13 +93,14 @@ export const DaySelector = memo(({
           alignItems: "center",
           justifyContent: "space-between",
           fontFamily: FONT,
-          fontSize: isMobilePortrait ? "1.2rem" : "1.3rem",
+          fontSize: isMobilePortrait ? "0.95rem" : "1.3rem",
           letterSpacing: "0.1em",
           height: 54,
           border: `1px solid ${CRIMSON}44`,
           background: "rgba(13, 1, 1, 0.4)",
           borderRadius: "4px",
-          px: 2,
+          px: isMobilePortrait ? 1 : 2,
+          gap: isMobilePortrait ? 0.5 : 1,
           cursor: "pointer",
           width: "100%",
           boxSizing: "border-box",
@@ -113,6 +114,7 @@ export const DaySelector = memo(({
           checked={showOnlyFav}
           onChange={(e) => onToggleFav(e.target.checked)}
           onClick={(e) => e.stopPropagation()} // Prevent double-triggering from parent Box click
+          size={isMobilePortrait ? "small" : "medium"}
           sx={{
             "& .MuiSwitch-thumb": { backgroundColor: showOnlyFav ? CRIMSON : "#555" },
             "& .MuiSwitch-track": { backgroundColor: showOnlyFav ? `${CRIMSON}77` : "#222" },

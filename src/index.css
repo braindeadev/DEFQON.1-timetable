@@ -62,10 +62,7 @@ body {
 
 @keyframes flashHighlight {
   0% { transform: scale(1); filter: brightness(1); }
-  20% { transform: scale(1.15); filter: brightness(3); box-shadow: 0 0 50px #fff; z-index: 100; }
-  40% { transform: scale(1); filter: brightness(1); }
-  60% { transform: scale(1.15); filter: brightness(3); box-shadow: 0 0 50px #fff; z-index: 100; }
-  80% { transform: scale(1); filter: brightness(1); }
+  30% { transform: scale(1.05); filter: brightness(1.2); }
   100% { transform: scale(1); filter: brightness(1); }
 }
 

@@ -165,7 +165,7 @@ export const dialogPaperSx = {
   backgroundPosition: "center",
   border: `2px solid ${CRIMSON}cc`,
   color: BEIGE_L,
-  boxShadow: "0 15px 50px rgba(0,0,0,0.95), 0 0 30px rgba(145, 1, 1, 0.5)",
+  boxShadow: "0 15px 50px rgba(0,0,0,0.95)",
   borderRadius: "12px",
 };
 
@@ -178,7 +178,7 @@ export const dialogTitleSx = {
   borderBottom: `2px solid ${CRIMSON}`,
   pb: 1.5,
   textAlign: "center",
-  textShadow: `0 0 10px rgba(145, 1, 1, 0.8), 0 0 2px rgba(255,255,255,0.5)`,
+  textShadow: "0 2px 5px rgba(0, 0, 0, 0.9)",
 };
 
 export const dialogContentSx = {

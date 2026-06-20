@@ -366,7 +366,7 @@ export const SettingsDialog = ({
 
         <Box sx={{ textAlign: "center", opacity: 0.3, pt: 2 }}>
           <Typography sx={{ fontFamily: FONT, fontSize: "0.75rem", letterSpacing: "0.15em" }}>
-            DEFQON.1 TIMETABLE v1.1 • BY SACRED OATH
+            DEFQON.1 TIMETABLE ME!
           </Typography>
         </Box>
       </DialogContent>
