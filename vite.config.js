@@ -39,6 +39,7 @@ export default defineConfig({
         ]
       },
       workbox: {
+        importScripts: ['sw-custom.js'],
         globPatterns: ['**/*.{js,css,html,ico,png,svg,jpg,jpeg,webp,ttf,woff,woff2}'],
         // The background image is 4.2 MB, so we must raise the default Workbox size limit (2MB)
         maximumFileSizeToCacheInBytes: 6 * 1024 * 1024

@@ -24,9 +24,13 @@ export function useAlerts(favorites, selectedDay) {
     }
   });
 
+  // Synchronous ref to track fired alerts across intervals/render updates immediately and avoid double notifications
+  const firedAlertsRef = useRef(firedAlerts);
+  firedAlertsRef.current = firedAlerts;
+
   // Keep a ref to avoid recreating the interval effect
-  const stateRef = useRef({ favorites, selectedDay, alertsEnabled, alertOffset, firedAlerts });
-  stateRef.current = { favorites, selectedDay, alertsEnabled, alertOffset, firedAlerts };
+  const stateRef = useRef({ favorites, selectedDay, alertsEnabled, alertOffset });
+  stateRef.current = { favorites, selectedDay, alertsEnabled, alertOffset };
 
   // Save settings on change
   useEffect(() => {
@@ -65,7 +69,7 @@ export function useAlerts(favorites, selectedDay) {
   }, []);
 
   // Helper to trigger system notification
-  const sendNotification = useCallback(async (title, body) => {
+  const sendNotification = useCallback(async (title, body, tag = undefined) => {
     if (!("Notification" in window) || Notification.permission !== "granted") {
       return;
     }
@@ -80,7 +84,7 @@ export function useAlerts(favorites, selectedDay) {
             icon: "/DEFQON.1-timetable/pwa-192x192.png",
             badge: "/DEFQON.1-timetable/pwa-192x192.png",
             vibrate: [200, 100, 200],
-            tag: "dq1-alert",
+            tag: tag || "dq1-alert",
             renotify: true,
           });
           return;
@@ -91,16 +95,20 @@ export function useAlerts(favorites, selectedDay) {
     }
 
     // Fallback
-    new Notification(title, {
+    const notification = new Notification(title, {
       body,
       icon: "/DEFQON.1-timetable/pwa-192x192.png",
+      tag: tag || "dq1-alert",
     });
+    notification.onclick = () => {
+      window.focus();
+    };
   }, []);
 
   // Interval check
   useEffect(() => {
     const checkAlerts = () => {
-      const { favorites: favs, selectedDay: day, alertsEnabled: enabled, alertOffset: offset, firedAlerts: fired } = stateRef.current;
+      const { favorites: favs, selectedDay: day, alertsEnabled: enabled, alertOffset: offset } = stateRef.current;
       if (!enabled || favs.length === 0) return;
 
       const now = DateTime.now().setZone("Europe/Amsterdam");
@@ -114,7 +122,7 @@ export function useAlerts(favorites, selectedDay) {
       if (!dayData) return;
 
       const [dayStartHour] = dayData.dayStart.split(":").map(Number);
-      const firedSet = new Set(fired);
+      const firedSet = new Set(firedAlertsRef.current);
       let updatedFired = false;
 
       // Find all events for the current day
@@ -142,9 +150,11 @@ export function useAlerts(favorites, selectedDay) {
             if (diffMin >= 0 && diffMin <= 5) {
               sendNotification(
                 "Artist Starting Soon!",
-                `${event.name} starts in ${offset} minutes on the ${stage.name} stage!`
+                `${event.name} starts in ${offset} minutes on the ${stage.name} stage!`,
+                eventId
               );
               firedSet.add(eventId);
+              firedAlertsRef.current = Array.from(firedSet); // Synchronous update to immediately block duplicate calls
               updatedFired = true;
             }
           }

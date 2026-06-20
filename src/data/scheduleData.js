@@ -68,6 +68,41 @@ const scheduleData = {
         ]
       },
       {
+        "name": "MAGENTA",
+        "events": [
+          {
+            "name": "ANDY SVGE",
+            "start": "18:00",
+            "end": "19:30"
+          },
+          {
+            "name": "LARSTIG & GASDROP",
+            "start": "19:30",
+            "end": "21:00"
+          },
+          {
+            "name": "DR. RUDE \"JUMP CLASSICS\"",
+            "start": "21:00",
+            "end": "22:15"
+          },
+          {
+            "name": "ACT OF RAGE & ADRENALIZE",
+            "start": "22:15",
+            "end": "23:15"
+          },
+          {
+            "name": "DEEPACK",
+            "start": "23:15",
+            "end": "00:30"
+          },
+          {
+            "name": "GOLDSCHOOL WITH FRIENDS",
+            "start": "00:30",
+            "end": "02:00"
+          }
+        ]
+      },
+      {
         "name": "INDIGO",
         "events": [
           {
@@ -124,41 +159,6 @@ const scheduleData = {
             "name": "THE RAVER",
             "start": "22:00",
             "end": "23:00"
-          }
-        ]
-      },
-      {
-        "name": "MAGENTA",
-        "events": [
-          {
-            "name": "ANDY SVGE",
-            "start": "18:00",
-            "end": "19:30"
-          },
-          {
-            "name": "LARSTIG & GASDROP",
-            "start": "19:30",
-            "end": "21:00"
-          },
-          {
-            "name": "DR. RUDE \"JUMP CLASSICS\"",
-            "start": "21:00",
-            "end": "22:15"
-          },
-          {
-            "name": "ACT OF RAGE & ADRENALIZE",
-            "start": "22:15",
-            "end": "23:15"
-          },
-          {
-            "name": "DEEPACK",
-            "start": "23:15",
-            "end": "00:30"
-          },
-          {
-            "name": "GOLDSCHOOL WITH FRIENDS",
-            "start": "00:30",
-            "end": "02:00"
           }
         ]
       },
