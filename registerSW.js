@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/DEFQON.1-timetable/sw.js', { scope: '/DEFQON.1-timetable/' })})}
