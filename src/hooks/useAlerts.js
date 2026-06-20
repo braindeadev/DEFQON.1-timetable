@@ -74,6 +74,15 @@ export function useAlerts(favorites, selectedDay) {
       return;
     }
 
+    // Trigger device vibration if supported in the foreground
+    if ("vibrate" in navigator) {
+      try {
+        navigator.vibrate([200, 100, 200]);
+      } catch (e) {
+        console.error("Vibration failed:", e);
+      }
+    }
+
     // Try to show notification using service worker (recommended for PWAs)
     if ("serviceWorker" in navigator) {
       try {
