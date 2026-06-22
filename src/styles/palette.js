@@ -1,3 +1,5 @@
+export const STAMPKROEG_BLUE = "#027BBD";
+
 // ── Stage-värit ────────────────────────────────────────────────
 export const STAGE_COLORS = {
   "RED":              "#B70610",
@@ -17,7 +19,7 @@ export const STAGE_COLORS = {
   "WHITE":            "#F9FBFD",
   "BROWN":            "#8B4D10",
   "BROWN - SILENT":   "#8B4D10",
-  "STAMPKROEG":       "#D04401",
+  "STAMPKROEG":       `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'><polygon points='0,0 30,0 70,100 0,100' fill='%23D04401'/><polygon points='30,0 100,0 100,100 70,100' fill='${encodeURIComponent(STAMPKROEG_BLUE)}'/></svg>")`,
 };
 
 // Palauttaa stagen värin nimen perusteella, fallback CRIMSON

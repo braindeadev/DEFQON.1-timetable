@@ -5,7 +5,7 @@ import bgImage from "../assets/images/20240630_225308_dq1_24_album_chronologisch
 export const stageNameSx = (color) => ({
   textAlign: "center",
   fontWeight: "bold",
-  backgroundColor: color,
+  background: color,
   color: "#fff",
   height: "100%",
   display: "flex",

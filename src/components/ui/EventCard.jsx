@@ -25,10 +25,10 @@ export const EventCard = memo(({ eventId, event, stageColor, colStart, colEnd, i
   const cardStyle = useMemo(() => {
     const gridColumn = `${Math.floor(colStart) + 1} / ${Math.ceil(colEnd) + 1}`;
     const padding = isLandscape ? "2px 4px" : "4px 8px";
-    const backgroundColor = gray ? "#3a3a3a" : stageColor;
+    const isSpecialBg = typeof stageColor === "string" && (stageColor.includes("gradient") || stageColor.includes("svg") || stageColor.includes("data:"));
+    const solidColor = isSpecialBg ? "#D04401" : stageColor;
     const color = gray ? "#999" : "#fff";
     const opacity = gray ? 0.45 : 1;
-    const border = gray ? "2px solid #555" : `2px solid ${stageColor}99`;
     const filter = gray ? "grayscale(80%) brightness(0.7)" : "none";
     const zIndex = isSelected ? 100 : 10;
     
@@ -38,19 +38,29 @@ export const EventCard = memo(({ eventId, event, stageColor, colStart, colEnd, i
       overflow: "hidden",
       padding,
       minHeight: 0,
-      backgroundColor,
       color,
       opacity,
-      border,
       filter,
       zIndex,
       transition: "opacity 0.15s ease, filter 0.15s ease",
     };
 
+    if (gray) {
+      style.background = "#3a3a3a";
+      style.border = "2px solid #555";
+    } else if (isSpecialBg) {
+      // Stampkroeg: Split border by clipping background to border-box and padding-box
+      style.border = "2px solid transparent";
+      style.background = `linear-gradient(rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.15)) padding-box, ${stageColor} border-box`;
+    } else {
+      style.background = stageColor;
+      style.border = `2px solid ${solidColor}99`;
+    }
+
     if (isSelected) {
       style.opacity = 1;
-      style.border = `3px solid color-mix(in srgb, ${stageColor} 80%, #ffffff)`;
-      style.boxShadow = `0 0 15px color-mix(in srgb, ${stageColor} 50%, #ffffff)`;
+      style.border = `3px solid color-mix(in srgb, ${solidColor} 80%, #ffffff)`;
+      style.boxShadow = `0 0 15px color-mix(in srgb, ${solidColor} 50%, #ffffff)`;
       style.filter = "none";
       style.animation = "flashHighlight 1.0s ease-in-out forwards";
     }

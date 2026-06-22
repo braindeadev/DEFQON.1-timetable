@@ -7,7 +7,6 @@ import { useFavorites } from "../../hooks/useFavorites";
 import { useNowLine } from "../../hooks/useNowLine";
 import { useDragScroll } from "../../hooks/useDragScroll";
 import { useZoom } from "../../hooks/useZoom";
-import { useAlerts } from "../../hooks/useAlerts";
 import { decodeFavorites, getDaysFromEventIds } from "../../utils/shareUtils";
 import { DaySelector } from "./DaySelector";
 import { StageColumn } from "./StageColumn";
@@ -34,13 +33,6 @@ export default function Timetable() {
     const s = localStorage.getItem("selectedDay");
     return s && scheduleData[s] ? s : DEFAULT_DAY;
   });
-
-  const { 
-    alertsEnabled, 
-    alertOffset, 
-    setAlertsEnabled, 
-    setAlertOffset 
-  } = useAlerts(favorites, selectedDay);
 
   const { dayStart } = scheduleData[selectedDay] || {};
   const { currentTimeIndex, showCurrentLine } = useNowLine(selectedDay, dayStart);
@@ -398,10 +390,6 @@ export default function Timetable() {
           setFavorites(newFavs);
           setSettingsOpen(false);
         }}
-        alertsEnabled={alertsEnabled}
-        onToggleAlerts={setAlertsEnabled}
-        alertOffset={alertOffset}
-        onChangeAlertOffset={setAlertOffset}
       />
     </>
   );

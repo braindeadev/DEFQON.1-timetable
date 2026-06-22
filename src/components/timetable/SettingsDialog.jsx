@@ -9,11 +9,7 @@ import {
   IconButton,
   TextField,
   Snackbar,
-  Alert,
-  Switch,
-  FormControl,
-  Select,
-  MenuItem
+  Alert
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import DeleteSweepIcon from "@mui/icons-material/DeleteSweep";
@@ -38,11 +34,7 @@ export const SettingsDialog = ({
   onClose, 
   favorites, 
   onClearClick, 
-  onImportFavorites,
-  alertsEnabled,
-  onToggleAlerts,
-  alertOffset,
-  onChangeAlertOffset
+  onImportFavorites
 }) => {
   const [importText, setImportText] = useState("");
   const [snackbar, setSnackbar] = useState({ open: false, message: "", severity: "success" });
@@ -171,7 +163,7 @@ export const SettingsDialog = ({
       <DialogContent sx={{ ...dialogContentSx, px: 3, textAlign: "left" }}>
         
         {/* SHARE SECTION */}
-        <Box sx={{ mt: 1, mb: 4 }}>
+        <Box sx={{ mt: 4, mb: 4 }}>
           <Typography sx={dialogSectionHeaderSx(false)}>
             SHARE FAVORITES
           </Typography>
@@ -288,60 +280,7 @@ export const SettingsDialog = ({
             IMPORT DATA
           </Button>
         </Box>
-        
-        {/* NOTIFICATIONS SECTION */}
-        <Box sx={{ mb: 4 }}>
-          <Typography sx={dialogSectionHeaderSx(false)}>
-            SET ALERTS (OFFLINE READY)
-          </Typography>
-          
-          <Typography sx={dialogDescSx}>
-            Get native push notifications before your favorite artists start playing.
-          </Typography>
 
-          <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", mb: 2 }}>
-            <Typography sx={dialogLabelSx}>
-              ENABLE ALERTS
-            </Typography>
-            <Switch
-              checked={alertsEnabled}
-              onChange={(e) => onToggleAlerts(e.target.checked)}
-              sx={{
-                "& .MuiSwitch-thumb": { backgroundColor: alertsEnabled ? CRIMSON : "#555" },
-                "& .MuiSwitch-track": { backgroundColor: alertsEnabled ? `${CRIMSON}77` : "#222" },
-              }}
-            />
-          </Box>
-
-          <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", mb: 2, gap: 2 }}>
-            <Typography sx={{ ...dialogLabelSx, opacity: alertsEnabled ? 1 : 0.5 }}>
-              ALERT TIME
-            </Typography>
-            <FormControl size="small" disabled={!alertsEnabled} sx={{ minWidth: 140 }}>
-              <Select
-                value={alertOffset}
-                onChange={(e) => onChangeAlertOffset(Number(e.target.value))}
-                sx={selectSx}
-                MenuProps={{
-                  PaperProps: {
-                    sx: {
-                      background: MENU_BG,
-                      border: `2px solid ${CRIMSON}45`,
-                      borderRadius: "4px",
-                      mt: "4px",
-                    },
-                  },
-                }}
-              >
-                <MenuItem value={5} sx={menuItemSx}>5 MINS BEFORE</MenuItem>
-                <MenuItem value={10} sx={menuItemSx}>10 MINS BEFORE</MenuItem>
-                <MenuItem value={15} sx={menuItemSx}>15 MINS BEFORE</MenuItem>
-                <MenuItem value={30} sx={menuItemSx}>30 MINS BEFORE</MenuItem>
-              </Select>
-            </FormControl>
-          </Box>
-
-        </Box>
 
         {/* DANGER ZONE */}
         <Box sx={{ mb: 2 }}>
