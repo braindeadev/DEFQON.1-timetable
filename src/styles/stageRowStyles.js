@@ -160,9 +160,7 @@ export const clearBtnSx = {
 
 // ── Vahvistusdialogi ──────────────────────────────────────────
 export const dialogPaperSx = {
-  backgroundImage: `linear-gradient(rgba(5, 1, 1, 0.98), rgba(5, 1, 1, 0.98)), url(${bgImage})`,
-  backgroundSize: "cover",
-  backgroundPosition: "center",
+  background: "linear-gradient(135deg, rgba(15, 3, 3, 0.98) 0%, rgba(5, 1, 1, 0.98) 100%)",
   border: `2px solid ${CRIMSON}cc`,
   color: BEIGE_L,
   boxShadow: "0 15px 50px rgba(0,0,0,0.95)",
